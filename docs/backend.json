@@ -91,6 +91,22 @@
         "longitude",
         "identificationMethod"
       ]
+    },
+    "Bird": {
+      "title": "Bird",
+      "type": "object",
+      "description": "Represents a bird species in the database.",
+      "properties": {
+        "name": { "type": "string", "description": "The common name of the bird." },
+        "description": { "type": "string", "description": "A detailed description of the bird." },
+        "size": { "type": "string", "enum": ["small", "medium", "large"] },
+        "habitat": { "type": "string", "enum": ["forest", "wetland", "grassland", "urban"] },
+        "colors": { "type": "array", "items": { "type": "string" } },
+        "imageUrl": { "type": "string", "format": "uri", "description": "URL to a photo of the bird." },
+        "songUrl": { "type": "string", "format": "uri", "description": "URL to an audio recording of the bird's song." },
+        "videoUrl": { "type": "string", "format": "uri", "description": "URL to a video of the bird." }
+      },
+      "required": ["name", "description", "size", "habitat", "colors"]
     }
   },
   "auth": {
@@ -133,6 +149,22 @@
             {
               "name": "sightingId",
               "description": "The unique identifier for the bird sighting record."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/birds/{birdId}",
+        "definition": {
+          "entityName": "Bird",
+          "schema": {
+            "$ref": "#/backend/entities/Bird"
+          },
+          "description": "Stores the master list of all bird species.",
+          "params": [
+            {
+              "name": "birdId",
+              "description": "The unique identifier for the bird species."
             }
           ]
         }

@@ -5,8 +5,10 @@ import { PhotoIdentifier } from "@/components/identification/photo-identifier";
 import { SongIdentifier } from "@/components/identification/song-identifier";
 import { ManualIdentifier } from "@/components/identification/manual-identifier";
 import { VideoIdentifier } from "@/components/identification/video-identifier";
-import { Camera, Mic, Search, Video } from "lucide-react";
+import { Camera, Mic, Search, Video, PlusSquare } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function IdentifyPage() {
   const { t } = useTranslation();
@@ -53,6 +55,14 @@ export default function IdentifyPage() {
             </div>
           </TabsContent>
         </Tabs>
+        <div className="mt-8 text-center">
+            <Button asChild variant="outline">
+              <Link href="/register-bird">
+                <PlusSquare className="mr-2" />
+                Register New Bird
+              </Link>
+            </Button>
+          </div>
       </div>
     </div>
   );
