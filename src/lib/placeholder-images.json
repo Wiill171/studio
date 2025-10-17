@@ -1,3 +1,46 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "american-robin",
+      "description": "An American Robin perched on a branch.",
+      "imageUrl": "https://images.unsplash.com/photo-1649572814675-3430c0b6c0f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxyb2JpbiUyMGJpcmR8ZW58MHx8fHwxNzYwNzM5NTE0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "robin bird"
+    },
+    {
+      "id": "blue-jay",
+      "description": "A Blue Jay with its crest raised.",
+      "imageUrl": "https://images.unsplash.com/photo-1576121267872-1c0c5c24e7f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxibHVlJTIwamF5fGVufDB8fHx8MTc2MDczOTUxNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "blue jay"
+    },
+    {
+      "id": "northern-cardinal",
+      "description": "A male Northern Cardinal in bright red plumage.",
+      "imageUrl": "https://images.unsplash.com/photo-1612311221084-4ccf01196ff0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxyZWQlMjBjYXJkaW5hbHxlbnwwfHx8fDE3NjA3Mzk1MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "red cardinal"
+    },
+    {
+      "id": "mallard",
+      "description": "A male Mallard duck with a glossy green head.",
+      "imageUrl": "https://images.unsplash.com/photo-1594270844773-a7d264a62285?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxtYWxsYXJkJTIwZHVja3xlbnwwfHx8fDE3NjA3Mzk1MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "mallard duck"
+    },
+    {
+      "id": "american-goldfinch",
+      "description": "A bright yellow American Goldfinch on a flower.",
+      "imageUrl": "https://images.unsplash.com/photo-1723804187168-eb1e360aa3e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx5ZWxsb3clMjBmaW5jaHxlbnwwfHx8fDE3NjA3Mzk1MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "yellow finch"
+    },
+    {
+      "id": "downy-woodpecker",
+      "description": "A Downy Woodpecker clinging to a tree trunk.",
+      "imageUrl": "https://images.unsplash.com/photo-1714968996898-a89511b12f5c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3b29kcGVja2VyJTIwYmlyZHxlbnwwfHx8fDE3NjA3Mzk1MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "woodpecker bird"
+    },
+    {
+      "id": "bird-song-generic",
+      "description": "A generic image for a bird identified by song.",
+      "imageUrl": "https://images.unsplash.com/photo-1659964817732-b1ba26fe3c61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzaW5naW5nJTIwYmlyZHxlbnwwfHx8fDE3NjA3Mzk1MTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "singing bird"
+    }
+  ]
 }
