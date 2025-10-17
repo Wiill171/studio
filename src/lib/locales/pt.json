@@ -11,6 +11,7 @@
   "locationDetected": "Localização detectada",
   "locationAccessDenied": "Acesso à localização negado",
   "identifyByPhoto": "Identificar por Foto",
+  "identifyByVideo": "Identificar por Vídeo",
   "identifyBySong": "Identificar por Canto",
   "identifyManually": "Identificar Manualmente",
   "identifyBirdByPhotoTitle": "Identificar Pássaro por Foto",
@@ -77,5 +78,10 @@
   "loadingHistory": "Carregando histórico",
   "noHistoryFound": "Você ainda não tem histórico de identificação. Vá identificar alguns pássaros!",
   "photo": "Foto",
-  "song": "Canto"
+  "song": "Canto",
+  "identifyBirdByVideoTitle": "Identificar Pássaro por Vídeo",
+  "identifyBirdByVideoDescription": "Carregue um vídeo curto de um pássaro. Nossa IA analisará as imagens para identificar a espécie.",
+  "uploadVideo": "Carregar Vídeo",
+  "noVideoSelectedToastTitle": "Nenhum vídeo selecionado",
+  "noVideoSelectedToastDescription": "Por favor, escolha um vídeo para identificar."
 }

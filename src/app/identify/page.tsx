@@ -4,7 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PhotoIdentifier } from "@/components/identification/photo-identifier";
 import { SongIdentifier } from "@/components/identification/song-identifier";
 import { ManualIdentifier } from "@/components/identification/manual-identifier";
-import { Camera, Mic, Search } from "lucide-react";
+import { VideoIdentifier } from "@/components/identification/video-identifier";
+import { Camera, Mic, Search, Video } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 
 export default function IdentifyPage() {
@@ -13,10 +14,14 @@ export default function IdentifyPage() {
     <div className="container py-12">
       <div className="mx-auto max-w-4xl">
         <Tabs defaultValue="photo" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="photo">
               <Camera className="mr-2" />
               {t("identifyByPhoto")}
+            </TabsTrigger>
+            <TabsTrigger value="video">
+              <Video className="mr-2" />
+              {t("identifyByVideo")}
             </TabsTrigger>
             <TabsTrigger value="song">
               <Mic className="mr-2" />
@@ -30,6 +35,11 @@ export default function IdentifyPage() {
           <TabsContent value="photo">
             <div className="mt-8">
               <PhotoIdentifier />
+            </div>
+          </TabsContent>
+          <TabsContent value="video">
+            <div className="mt-8">
+              <VideoIdentifier />
             </div>
           </TabsContent>
           <TabsContent value="song">

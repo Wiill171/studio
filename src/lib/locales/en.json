@@ -11,6 +11,7 @@
   "locationDetected": "Location detected",
   "locationAccessDenied": "Location access denied",
   "identifyByPhoto": "Identify by Photo",
+  "identifyByVideo": "Identify by Video",
   "identifyBySong": "Identify by Song",
   "identifyManually": "Identify Manually",
   "identifyBirdByPhotoTitle": "Identify Bird by Photo",
@@ -77,5 +78,10 @@
   "loadingHistory": "Loading history",
   "noHistoryFound": "You have no identification history yet. Go identify some birds!",
   "photo": "Photo",
-  "song": "Song"
+  "song": "Song",
+  "identifyBirdByVideoTitle": "Identify Bird by Video",
+  "identifyBirdByVideoDescription": "Upload a short video of a bird. Our AI will analyze the footage to identify the species.",
+  "uploadVideo": "Upload Video",
+  "noVideoSelectedToastTitle": "No video selected",
+  "noVideoSelectedToastDescription": "Please choose a video to identify."
 }

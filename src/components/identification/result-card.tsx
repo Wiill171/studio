@@ -19,7 +19,8 @@ import { useTranslation } from "@/hooks/use-translation";
 interface ResultCardProps {
   title: string;
   description: string;
-  imageUrl: string;
+  imageUrl?: string;
+  videoUrl?: string;
   confidence?: number;
   shareText: string;
   alternativeSpecies?: string[];
@@ -29,6 +30,7 @@ export function ResultCard({
   title,
   description,
   imageUrl,
+  videoUrl,
   confidence,
   shareText,
   alternativeSpecies,
@@ -52,7 +54,8 @@ export function ResultCard({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="relative w-full aspect-video rounded-md overflow-hidden">
-          <Image src={imageUrl} alt={title} fill style={{ objectFit: 'cover' }} data-ai-hint="bird photo"/>
+          {imageUrl && <Image src={imageUrl} alt={title} fill style={{ objectFit: 'cover' }} data-ai-hint="bird photo"/>}
+          {videoUrl && <video src={videoUrl} controls className="w-full h-full" />}
         </div>
         <p className="text-foreground/90">{description}</p>
         
