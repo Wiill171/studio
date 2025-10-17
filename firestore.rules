@@ -1,0 +1,75 @@
+/**
+ * @fileoverview Firestore Security Rules for Avis Explorer.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a strict user-ownership model. Each user can only access their own profile data and associated bird sighting records.
+ *
+ * Data Structure:
+ * - User profiles are stored in `/users/{userId}`.
+ * - Bird sightings are stored as subcollections under each user's profile in `/users/{userId}/sightings/{sightingId}`.
+ *
+ * Key Security Decisions:
+ * - User listing is explicitly disallowed to prevent unauthorized enumeration of user accounts.
+ * - All write operations (create, update, delete) are strictly limited to the owning user.
+ * - Read operations are allowed only for the owning user.
+ *
+ * Denormalization for Authorization:
+ * - The `userProfileId` field in the `BirdSighting` entity is validated to match the `userId` in the path. This ensures that a sighting is always associated with the correct user.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Protects user profile data, ensuring only the owning user can read or write.
+     * @path /users/{userId}
+     * @allow (create) - User with ID 'user123' creates a profile with id: 'user123'.
+     * @allow (get, update, delete) - User with ID 'user123' reads/updates/deletes their profile.
+     * @deny (create) - User with ID 'user123' tries to create a profile with id: 'user456'.
+     * @deny (get, update, delete) - User with ID 'user456' attempts to read/update/delete user 'user123' profile.
+     * @principle Enforces document ownership for all operations.
+     */
+    match /users/{userId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if false; // Disallow listing all users
+
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Protects bird sighting records, ensuring only the owning user can read or write.
+     * @path /users/{userId}/sightings/{sightingId}
+     * @allow (create) - User with ID 'user123' creates a sighting record under their profile.
+     * @allow (get, update, delete) - User with ID 'user123' reads/updates/deletes their sighting record.
+     * @deny (create) - User with ID 'user456' attempts to create a sighting record under user 'user123' profile.
+     * @deny (get, update, delete) - User with ID 'user456' attempts to read/update/delete a sighting record under user 'user123' profile.
+     * @principle Enforces document ownership and validates the relationship between user and sighting.
+     */
+    match /users/{userId}/sightings/{sightingId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) && request.resource.data.userProfileId == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.userProfileId == resource.data.userProfileId;
+      allow delete: if isExistingOwner(userId);
+    }
+  }
+}

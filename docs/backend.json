@@ -1,0 +1,143 @@
+{
+  "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents the profile of a user within the Avis Explorer application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the UserProfile entity."
+        },
+        "username": {
+          "type": "string",
+          "description": "The user's chosen username."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address.",
+          "format": "email"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The user's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The user's last name."
+        },
+        "registrationDate": {
+          "type": "string",
+          "description": "The date and time the user registered.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "username",
+        "email",
+        "firstName",
+        "lastName",
+        "registrationDate"
+      ]
+    },
+    "BirdSighting": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "BirdSighting",
+      "type": "object",
+      "description": "Represents a record of a bird sighting by a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the BirdSighting entity."
+        },
+        "userProfileId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N BirdSighting)"
+        },
+        "birdSpecies": {
+          "type": "string",
+          "description": "The identified species of the bird."
+        },
+        "sightingDate": {
+          "type": "string",
+          "description": "The date and time of the bird sighting.",
+          "format": "date-time"
+        },
+        "latitude": {
+          "type": "number",
+          "description": "The latitude of the sighting location."
+        },
+        "longitude": {
+          "type": "number",
+          "description": "The longitude of the sighting location."
+        },
+        "identificationMethod": {
+          "type": "string",
+          "description": "The method used to identify the bird (e.g., image recognition, song recognition, manual description)."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional notes about the sighting."
+        }
+      },
+      "required": [
+        "id",
+        "userProfileId",
+        "birdSpecies",
+        "sightingDate",
+        "latitude",
+        "longitude",
+        "identificationMethod"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile data. Uses path-based ownership for security. Only the user with the matching {userId} can read or write to this document.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/sightings/{sightingId}",
+        "definition": {
+          "entityName": "BirdSighting",
+          "schema": {
+            "$ref": "#/backend/entities/BirdSighting"
+          },
+          "description": "Stores bird sighting records for a specific user.  Uses path-based ownership for security. Only the user with the matching {userId} can read or write to documents in this collection.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "sightingId",
+              "description": "The unique identifier for the bird sighting record."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "This Firestore data structure is designed to support the Avis Explorer application, focusing on user profiles and bird sighting history. It prioritizes authorization independence by using path-based ownership for user data. User profiles are stored under `/users/{userId}`, ensuring that only the authenticated user can access their profile data. Bird sightings are stored as subcollections under each user's document at `/users/{userId}/sightings/{sightingId}`. This path-based ownership simplifies security rules and enables atomic operations.  The structure directly supports the required QAPs by segregating data based on ownership, thus limiting access to the data to only the owner, and enabling secure list operations for retrieving a user's sightings.  Denormalization is not required in this scenario as path-based ownership provides inherent authorization independence.  Timestamps can be added to both UserProfile and BirdSighting entities to track creation and modification dates, ensuring data integrity."
+  }
+}
