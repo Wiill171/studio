@@ -2,7 +2,17 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Feather, User, LogIn, MapPin, Loader2, Bird, Languages } from "lucide-react";
+import {
+  Feather,
+  User,
+  LogIn,
+  MapPin,
+  Loader2,
+  Bird,
+  Languages,
+  LogOut,
+  History,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,6 +26,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useLanguage } from "@/context/language-context";
 import { useTranslation } from "@/hooks/use-translation";
+import { useUser, useAuth } from "@/firebase";
+import { signOut } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 function GeolocationInfo() {
   const [location, setLocation] = useState<string | null>(null);
@@ -54,6 +67,16 @@ function GeolocationInfo() {
 export function Header() {
   const { language, setLanguage } = useLanguage();
   const { t } = useTranslation();
+  const { user, loading } = useUser();
+  const auth = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    if (auth) {
+      await signOut(auth);
+      router.push("/");
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -90,9 +113,18 @@ export function Header() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>{t("language")}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuRadioGroup value={language} onValueChange={(value) => setLanguage(value as 'en' | 'pt')}>
-                <DropdownMenuRadioItem value="en">English</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="pt">Português</DropdownMenuRadioItem>
+              <DropdownMenuRadioGroup
+                value={language}
+                onValueChange={(value) =>
+                  setLanguage(value as "en" | "pt")
+                }
+              >
+                <DropdownMenuRadioItem value="en">
+                  English
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="pt">
+                  Português
+                </DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -100,25 +132,59 @@ export function Header() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
+                {loading ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <User className="h-5 w-5" />
+                )}
                 <span className="sr-only">User Menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{t("myAccount")}</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/login">
-                  <LogIn className="mr-2 h-4 w-4" />
-                  <span>{t("login")}</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/signup">
-                  <User className="mr-2 h-4 w-4" />
-                  <span>{t("signUp")}</span>
-                </Link>
-              </DropdownMenuItem>
+              {loading ? (
+                <DropdownMenuItem disabled>{t("loading")}...</DropdownMenuItem>
+              ) : user ? (
+                <>
+                  <DropdownMenuLabel>
+                    {user.displayName || t("myAccount")}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>{t("myProfile")}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/history">
+                      <History className="mr-2 h-4 w-4" />
+                      <span>{t("identificationHistory")}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>{t("logout")}</span>
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                <>
+                  <DropdownMenuLabel>{t("myAccount")}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/login">
+                      <LogIn className="mr-2 h-4 w-4" />
+                      <span>{t("login")}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/signup">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>{t("signUp")}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

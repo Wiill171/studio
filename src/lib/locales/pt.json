@@ -4,6 +4,9 @@
   "myAccount": "Minha Conta",
   "login": "Entrar",
   "signUp": "Inscrever-se",
+  "logout": "Sair",
+  "myProfile": "Meu Perfil",
+  "identificationHistory": "Histórico de Identificações",
   "detectingLocation": "Detectando...",
   "locationDetected": "Localização detectada",
   "locationAccessDenied": "Acesso à localização negado",
@@ -65,5 +68,14 @@
   "identificationResult": "Resultado da Identificação",
   "confidence": "Confiança",
   "alternativeSpecies": "Espécies Alternativas",
-  "shareEmailSubject": "Veja este pássaro que eu encontrei!"
+  "shareEmailSubject": "Veja este pássaro que eu encontrei!",
+  "loading": "Carregando",
+  "pleaseLogIn": "Por favor, faça login para ver seu perfil.",
+  "viewYourProfileInfo": "Veja e gerencie suas informações de perfil.",
+  "pleaseLogInToViewHistory": "Por favor, faça login para ver seu histórico de identificação.",
+  "viewYourPastIdentifications": "Veja suas identificações de pássaros anteriores.",
+  "loadingHistory": "Carregando histórico",
+  "noHistoryFound": "Você ainda não tem histórico de identificação. Vá identificar alguns pássaros!",
+  "photo": "Foto",
+  "song": "Canto"
 }

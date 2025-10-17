@@ -4,6 +4,9 @@
   "myAccount": "My Account",
   "login": "Login",
   "signUp": "Sign Up",
+  "logout": "Logout",
+  "myProfile": "My Profile",
+  "identificationHistory": "Identification History",
   "detectingLocation": "Detecting...",
   "locationDetected": "Location detected",
   "locationAccessDenied": "Location access denied",
@@ -65,5 +68,14 @@
   "identificationResult": "Identification Result",
   "confidence": "Confidence",
   "alternativeSpecies": "Alternative Species",
-  "shareEmailSubject": "Check out this bird I found!"
+  "shareEmailSubject": "Check out this bird I found!",
+  "loading": "Loading",
+  "pleaseLogIn": "Please log in to view your profile.",
+  "viewYourProfileInfo": "View and manage your profile information.",
+  "pleaseLogInToViewHistory": "Please log in to view your identification history.",
+  "viewYourPastIdentifications": "View your past bird identifications.",
+  "loadingHistory": "Loading history",
+  "noHistoryFound": "You have no identification history yet. Go identify some birds!",
+  "photo": "Photo",
+  "song": "Song"
 }

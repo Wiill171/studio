@@ -14,6 +14,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -28,11 +33,22 @@ export function LoginForm() {
       password: "",
     },
   });
+  const auth = useAuth();
+  const { toast } = useToast();
+  const router = useRouter();
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // NOTE: This is a mock login. In a real app, you'd handle authentication here.
-    console.log(values);
-    alert("Login functionality is not implemented in this demo.");
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!auth) return;
+    try {
+      await signInWithEmailAndPassword(auth, values.email, values.password);
+      router.push("/");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Login Failed",
+        description: error.message,
+      });
+    }
   }
 
   return (
@@ -64,8 +80,8 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
-          Login
+        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? "Logging in..." : "Login"}
         </Button>
         <div className="text-center text-sm">
           Don't have an account?{" "}
