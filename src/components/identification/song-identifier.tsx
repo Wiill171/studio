@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { ResultCard } from "@/components/identification/result-card";
 import { Loader2, Music4, Upload } from "lucide-react";
 import placeHolderImages from "@/lib/placeholder-images.json";
+import { useTranslation } from "@/hooks/use-translation";
 
 export function SongIdentifier() {
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -17,6 +18,7 @@ export function SongIdentifier() {
   const [result, setResult] = useState<IdentifyBirdFromSongOutput | null>(null);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { t } = useTranslation();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -34,8 +36,8 @@ export function SongIdentifier() {
   const handleSubmit = async () => {
     if (!audioFile || !audioPreview) {
       toast({
-        title: "No audio file selected",
-        description: "Please choose an audio file to identify.",
+        title: t("noAudioFileSelectedToastTitle"),
+        description: t("noAudioFileSelectedToastDescription"),
         variant: "destructive",
       });
       return;
@@ -50,8 +52,8 @@ export function SongIdentifier() {
     } catch (error) {
       console.error("Error identifying bird from song:", error);
       toast({
-        title: "Identification Failed",
-        description: "An error occurred while trying to identify the bird song. Please try again.",
+        title: t("identificationFailedToastTitle"),
+        description: t("identificationFailedSongToastDescription"),
         variant: "destructive",
       });
     } finally {
@@ -69,7 +71,7 @@ export function SongIdentifier() {
           <div className="space-y-4">
             <div className="grid w-full items-center gap-1.5">
               <label htmlFor="audio" className="font-medium">
-                Upload Audio File
+                {t("uploadAudioFile")}
               </label>
               <Input
                 id="audio"
@@ -91,12 +93,12 @@ export function SongIdentifier() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Analyzing...
+                  {t("analyzing")}...
                 </>
               ) : (
                 <>
                   <Upload className="mr-2 h-4 w-4" />
-                  Identify Song
+                  {t("identifySong")}
                 </>
               )}
             </Button>
@@ -107,10 +109,10 @@ export function SongIdentifier() {
       {result && (
         <ResultCard
           title={result.species}
-          description={`Identified from its song with a confidence of ${(result.confidence * 100).toFixed(0)}%.`}
+          description={`${t("identifiedFromSongText")} ${(result.confidence * 100).toFixed(0)}%.`}
           imageUrl={randomImageUrl}
           confidence={result.confidence}
-          shareText={`I identified a ${result.species} by its song using Avis Explorer!`}
+          shareText={`${t("shareTextMessageSong")} ${result.species} ${t("shareTextMessageSuffix")}!`}
           alternativeSpecies={result.alternativeSpecies}
         />
       )}

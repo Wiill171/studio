@@ -21,6 +21,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { useForm } from "react-hook-form";
 import { birds, Bird } from "@/lib/birds";
 import { Search } from "lucide-react";
+import { useTranslation } from "@/hooks/use-translation";
+
 
 type FormValues = {
   size: string;
@@ -30,6 +32,8 @@ type FormValues = {
 
 export function ManualIdentifier() {
   const [results, setResults] = useState<Bird[]>([]);
+  const { t } = useTranslation();
+
   const form = useForm<FormValues>({
     defaultValues: {
       size: "all",
@@ -58,8 +62,8 @@ export function ManualIdentifier() {
     <div className="mx-auto max-w-4xl space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle className="font-headline">Describe the Bird</CardTitle>
-          <CardDescription>Select the features of the bird you saw.</CardDescription>
+          <CardTitle className="font-headline">{t("describeTheBird")}</CardTitle>
+          <CardDescription>{t("selectBirdFeatures")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -69,18 +73,18 @@ export function ManualIdentifier() {
                 name="size"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Size</FormLabel>
+                    <FormLabel>{t("size")}</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select size" />
+                          <SelectValue placeholder={t("selectSize")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="all">Any Size</SelectItem>
-                        <SelectItem value="small">Small</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="large">Large</SelectItem>
+                        <SelectItem value="all">{t("anySize")}</SelectItem>
+                        <SelectItem value="small">{t("small")}</SelectItem>
+                        <SelectItem value="medium">{t("medium")}</SelectItem>
+                        <SelectItem value="large">{t("large")}</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormItem>
@@ -91,21 +95,21 @@ export function ManualIdentifier() {
                 name="color"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Primary Color</FormLabel>
+                    <FormLabel>{t("primaryColor")}</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select color" />
+                          <SelectValue placeholder={t("selectColor")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="all">Any Color</SelectItem>
-                        <SelectItem value="brown">Brown</SelectItem>
-                        <SelectItem value="red">Red</SelectItem>
-                        <SelectItem value="blue">Blue</SelectItem>
-                        <SelectItem value="yellow">Yellow</SelectItem>
-                        <SelectItem value="black">Black</SelectItem>
-                        <SelectItem value="white">White</SelectItem>
+                        <SelectItem value="all">{t("anyColor")}</SelectItem>
+                        <SelectItem value="brown">{t("brown")}</SelectItem>
+                        <SelectItem value="red">{t("red")}</SelectItem>
+                        <SelectItem value="blue">{t("blue")}</SelectItem>
+                        <SelectItem value="yellow">{t("yellow")}</SelectItem>
+                        <SelectItem value="black">{t("black")}</SelectItem>
+                        <SelectItem value="white">{t("white")}</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormItem>
@@ -116,26 +120,26 @@ export function ManualIdentifier() {
                 name="habitat"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Habitat</FormLabel>
+                    <FormLabel>{t("habitat")}</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select habitat" />
+                          <SelectValue placeholder={t("selectHabitat")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="all">Any Habitat</SelectItem>
-                        <SelectItem value="forest">Forest</SelectItem>
-                        <SelectItem value="wetland">Wetland</SelectItem>
-                        <SelectItem value="grassland">Grassland</SelectItem>
-                        <SelectItem value="urban">Urban</SelectItem>
+                        <SelectItem value="all">{t("anyHabitat")}</SelectItem>
+                        <SelectItem value="forest">{t("forest")}</SelectItem>
+                        <SelectItem value="wetland">{t("wetland")}</SelectItem>
+                        <SelectItem value="grassland">{t("grassland")}</SelectItem>
+                        <SelectItem value="urban">{t("urban")}</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormItem>
                 )}
               />
               <Button type="submit" className="w-full">
-                <Search className="mr-2 h-4 w-4" /> Search
+                <Search className="mr-2 h-4 w-4" /> {t("search")}
               </Button>
             </form>
           </Form>
@@ -144,7 +148,7 @@ export function ManualIdentifier() {
 
       <div className="space-y-4">
         <h3 className="font-headline text-2xl">
-          {results.length} {results.length === 1 ? "Match" : "Matches"} Found
+          {results.length} {results.length === 1 ? t("matchFound") : t("matchesFound")}
         </h3>
         {results.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -169,7 +173,7 @@ export function ManualIdentifier() {
             ))}
           </div>
         ) : (
-          <p>No birds match your criteria. Try broadening your search.</p>
+          <p>{t("noBirdsMatch")}</p>
         )}
       </div>
     </div>

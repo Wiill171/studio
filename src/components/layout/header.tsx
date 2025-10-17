@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Feather, User, LogIn, MapPin, Loader2, Bird } from "lucide-react";
+import { Feather, User, LogIn, MapPin, Loader2, Bird, Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,24 +11,29 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
+import { useLanguage } from "@/context/language-context";
+import { useTranslation } from "@/hooks/use-translation";
 
 function GeolocationInfo() {
   const [location, setLocation] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (navigator.geolocation) {
-      setLocation("Detecting...");
+      setLocation(t("detectingLocation"));
       navigator.geolocation.getCurrentPosition(
         () => {
-          setLocation("Location detected");
+          setLocation(t("locationDetected"));
         },
         () => {
-          setLocation("Location access denied");
+          setLocation(t("locationAccessDenied"));
         }
       );
     }
-  }, []);
+  }, [t]);
 
   if (location === null) {
     return null;
@@ -36,7 +41,7 @@ function GeolocationInfo() {
 
   return (
     <div className="flex items-center gap-2 text-sm text-muted-foreground">
-      {location === "Detecting..." ? (
+      {location === t("detectingLocation") ? (
         <Loader2 className="h-4 w-4 animate-spin" />
       ) : (
         <MapPin className="h-4 w-4 text-accent" />
@@ -47,6 +52,9 @@ function GeolocationInfo() {
 }
 
 export function Header() {
+  const { language, setLanguage } = useLanguage();
+  const { t } = useTranslation();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
@@ -64,7 +72,7 @@ export function Header() {
             className="flex items-center gap-2 transition-colors hover:text-foreground/80 text-foreground/60"
           >
             <Bird className="h-5 w-5" />
-            <span>Identify</span>
+            <span>{t("identify")}</span>
           </Link>
         </nav>
         <div className="flex-1" />
@@ -75,23 +83,40 @@ export function Header() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
+                <Languages className="h-5 w-5" />
+                <span className="sr-only">Language Menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>{t("language")}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuRadioGroup value={language} onValueChange={(value) => setLanguage(value as 'en' | 'pt')}>
+                <DropdownMenuRadioItem value="en">English</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="pt">Português</DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
                 <User className="h-5 w-5" />
                 <span className="sr-only">User Menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{t("myAccount")}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href="/login">
                   <LogIn className="mr-2 h-4 w-4" />
-                  <span>Login</span>
+                  <span>{t("login")}</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/signup">
                   <User className="mr-2 h-4 w-4" />
-                  <span>Sign Up</span>
+                  <span>{t("signUp")}</span>
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>

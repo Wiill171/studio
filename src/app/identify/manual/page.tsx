@@ -1,16 +1,17 @@
+"use client";
 import { ManualIdentifier } from "@/components/identification/manual-identifier";
+import { useTranslation } from "@/hooks/use-translation";
 
 export default function IdentifyManualPage() {
+  const { t } = useTranslation();
   return (
     <div className="container py-12">
       <div className="mx-auto max-w-2xl text-center">
         <h1 className="font-headline text-4xl font-bold text-primary">
-          Manual Bird Identifier
+          {t("manualIdentifierTitle")}
         </h1>
         <p className="mt-4 text-lg text-foreground/80">
-          Can't get a photo or recording? No problem. Describe the bird you saw
-          using the options below, and we'll search our database for possible
-          matches.
+          {t("manualIdentifierDescription")}
         </p>
       </div>
       <div className="mt-12">

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { ResultCard } from "@/components/identification/result-card";
 import { Loader2, Upload } from "lucide-react";
 import Image from "next/image";
+import { useTranslation } from "@/hooks/use-translation";
 
 export function PhotoIdentifier() {
   const [photo, setPhoto] = useState<File | null>(null);
@@ -16,6 +17,7 @@ export function PhotoIdentifier() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<IdentifyBirdFromPhotoOutput | null>(null);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -33,8 +35,8 @@ export function PhotoIdentifier() {
   const handleSubmit = async () => {
     if (!photo || !photoPreview) {
       toast({
-        title: "Nenhuma foto selecionada",
-        description: "Por favor, escolha uma foto para identificar.",
+        title: t("noPhotoSelectedToastTitle"),
+        description: t("noPhotoSelectedToastDescription"),
         variant: "destructive",
       });
       return;
@@ -49,8 +51,8 @@ export function PhotoIdentifier() {
     } catch (error) {
       console.error("Error identifying bird from photo:", error);
       toast({
-        title: "Falha na identificação",
-        description: "Ocorreu um erro ao tentar identificar o pássaro. Por favor, tente novamente.",
+        title: t("identificationFailedToastTitle"),
+        description: t("identificationFailedToastDescription"),
         variant: "destructive",
       });
     } finally {
@@ -65,7 +67,7 @@ export function PhotoIdentifier() {
           <div className="space-y-4">
             <div className="grid w-full items-center gap-1.5">
               <label htmlFor="picture" className="font-medium">
-                Carregar foto
+                {t("uploadPhoto")}
               </label>
               <Input
                 id="picture"
@@ -79,7 +81,7 @@ export function PhotoIdentifier() {
               <div className="relative w-full aspect-video rounded-md overflow-hidden border">
                 <Image
                   src={photoPreview}
-                  alt="Pré-visualização do pássaro"
+                  alt={t("birdPreviewAlt")}
                   fill
                   style={{ objectFit: 'contain' }}
                 />
@@ -89,12 +91,12 @@ export function PhotoIdentifier() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Identificando...
+                  {t("identifying")}...
                 </>
               ) : (
                 <>
                   <Upload className="mr-2 h-4 w-4" />
-                  Identificar Pássaro
+                  {t("identifyBird")}
                 </>
               )}
             </Button>
@@ -108,7 +110,7 @@ export function PhotoIdentifier() {
           description={result.description}
           imageUrl={photoPreview!}
           confidence={result.confidence}
-          shareText={`Eu identifiquei um ${result.species} com o Avis Explorer!`}
+          shareText={`${t("shareTextMessage")} ${result.species} ${t("shareTextMessageSuffix")}!`}
         />
       )}
     </div>

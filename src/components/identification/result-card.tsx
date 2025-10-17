@@ -13,6 +13,8 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Mail, Share2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "@/hooks/use-translation";
+
 
 interface ResultCardProps {
   title: string;
@@ -31,11 +33,12 @@ export function ResultCard({
   shareText,
   alternativeSpecies,
 }: ResultCardProps) {
+  const { t } = useTranslation();
 
   const handleShare = (platform: "email" | "whatsapp") => {
     const encodedText = encodeURIComponent(shareText);
     if (platform === "email") {
-      window.open(`mailto:?subject=Check out this bird I found!&body=${encodedText}`);
+      window.open(`mailto:?subject=${t("shareEmailSubject")}&body=${encodedText}`);
     } else if (platform === "whatsapp") {
       window.open(`https://wa.me/?text=${encodedText}`);
     }
@@ -45,7 +48,7 @@ export function ResultCard({
     <Card className="overflow-hidden shadow-lg animate-in fade-in-50 zoom-in-95 duration-500">
       <CardHeader>
         <CardTitle className="font-headline text-3xl">{title}</CardTitle>
-        <CardDescription>Identification Result</CardDescription>
+        <CardDescription>{t("identificationResult")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="relative w-full aspect-video rounded-md overflow-hidden">
@@ -56,7 +59,7 @@ export function ResultCard({
         {confidence !== undefined && (
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <span className="text-sm font-medium">Confidence</span>
+              <span className="text-sm font-medium">{t("confidence")}</span>
               <span className="text-sm font-bold text-primary">
                 {(confidence * 100).toFixed(0)}%
               </span>
@@ -67,7 +70,7 @@ export function ResultCard({
         
         {alternativeSpecies && alternativeSpecies.length > 0 && (
           <div className="space-y-2">
-            <h4 className="text-sm font-medium">Alternative Species</h4>
+            <h4 className="text-sm font-medium">{t("alternativeSpecies")}</h4>
             <div className="flex flex-wrap gap-2">
               {alternativeSpecies.map(species => (
                 <Badge key={species} variant="secondary">{species}</Badge>
