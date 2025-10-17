@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Feather, User, LogIn, MapPin, Loader2 } from "lucide-react";
+import { Feather, User, LogIn, MapPin, Loader2, Bird } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -58,6 +58,15 @@ export function Header() {
             </span>
           </Link>
         </div>
+        <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
+          <Link
+            href="/identify"
+            className="flex items-center gap-2 transition-colors hover:text-foreground/80 text-foreground/60"
+          >
+            <Bird className="h-5 w-5" />
+            <span>Identify</span>
+          </Link>
+        </nav>
         <div className="flex-1" />
         <div className="flex items-center gap-4">
           <div className="hidden md:block">
