@@ -33,8 +33,8 @@ export function PhotoIdentifier() {
   const handleSubmit = async () => {
     if (!photo || !photoPreview) {
       toast({
-        title: "No photo selected",
-        description: "Please choose a photo to identify.",
+        title: "Nenhuma foto selecionada",
+        description: "Por favor, escolha uma foto para identificar.",
         variant: "destructive",
       });
       return;
@@ -49,8 +49,8 @@ export function PhotoIdentifier() {
     } catch (error) {
       console.error("Error identifying bird from photo:", error);
       toast({
-        title: "Identification Failed",
-        description: "An error occurred while trying to identify the bird. Please try again.",
+        title: "Falha na identificação",
+        description: "Ocorreu um erro ao tentar identificar o pássaro. Por favor, tente novamente.",
         variant: "destructive",
       });
     } finally {
@@ -65,7 +65,7 @@ export function PhotoIdentifier() {
           <div className="space-y-4">
             <div className="grid w-full items-center gap-1.5">
               <label htmlFor="picture" className="font-medium">
-                Upload Photo
+                Carregar foto
               </label>
               <Input
                 id="picture"
@@ -79,7 +79,7 @@ export function PhotoIdentifier() {
               <div className="relative w-full aspect-video rounded-md overflow-hidden border">
                 <Image
                   src={photoPreview}
-                  alt="Bird preview"
+                  alt="Pré-visualização do pássaro"
                   fill
                   style={{ objectFit: 'contain' }}
                 />
@@ -89,12 +89,12 @@ export function PhotoIdentifier() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Identifying...
+                  Identificando...
                 </>
               ) : (
                 <>
                   <Upload className="mr-2 h-4 w-4" />
-                  Identify Bird
+                  Identificar Pássaro
                 </>
               )}
             </Button>
@@ -108,7 +108,7 @@ export function PhotoIdentifier() {
           description={result.description}
           imageUrl={photoPreview!}
           confidence={result.confidence}
-          shareText={`I identified a ${result.species} with Avis Explorer!`}
+          shareText={`Eu identifiquei um ${result.species} com o Avis Explorer!`}
         />
       )}
     </div>
