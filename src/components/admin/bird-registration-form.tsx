@@ -24,10 +24,11 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { Loader2, Upload } from "lucide-react";
+import { Loader2, Upload, X } from "lucide-react";
 import { addDocumentNonBlocking } from "@/firebase/non-blocking-updates";
 import { useFirestore } from "@/firebase";
 import { collection } from "firebase/firestore";
+import { Badge } from "@/components/ui/badge";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -35,6 +36,7 @@ const formSchema = z.object({
   size: z.enum(["small", "medium", "large"]),
   habitat: z.enum(["forest", "wetland", "grassland", "urban"]),
   primaryColor: z.string().min(1, { message: "Primary color is required." }),
+  globalRange: z.array(z.string()).min(1, { message: "At least one region is required."}),
 });
 
 export function BirdRegistrationForm() {
@@ -43,6 +45,7 @@ export function BirdRegistrationForm() {
     defaultValues: {
       name: "",
       description: "",
+      globalRange: [],
     },
   });
   const { toast } = useToast();
@@ -51,6 +54,23 @@ export function BirdRegistrationForm() {
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [songFile, setSongFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [rangeInput, setRangeInput] = useState("");
+
+
+  const handleRangeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && rangeInput.trim() !== "") {
+      e.preventDefault();
+      const newRanges = [...form.getValues("globalRange"), rangeInput.trim()];
+      form.setValue("globalRange", newRanges);
+      setRangeInput("");
+    }
+  };
+
+  const removeRange = (index: number) => {
+    const currentRanges = form.getValues("globalRange");
+    const newRanges = currentRanges.filter((_, i) => i !== index);
+    form.setValue("globalRange", newRanges);
+  }
 
   const fileToDataUri = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -218,6 +238,36 @@ export function BirdRegistrationForm() {
                         )}
                     />
                 </div>
+                 <FormField
+                  control={form.control}
+                  name="globalRange"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Global Range</FormLabel>
+                      <FormControl>
+                        <>
+                          <Input
+                            placeholder="e.g., North America, Europe. Press Enter to add."
+                            value={rangeInput}
+                            onChange={(e) => setRangeInput(e.target.value)}
+                            onKeyDown={handleRangeKeyDown}
+                          />
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {field.value.map((range, index) => (
+                              <Badge key={index} variant="secondary">
+                                {range}
+                                <button type="button" onClick={() => removeRange(index)} className="ml-2">
+                                  <X className="h-3 w-3"/>
+                                </button>
+                              </Badge>
+                            ))}
+                          </div>
+                        </>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                  <FormItem>
                     <FormLabel>Photo</FormLabel>
