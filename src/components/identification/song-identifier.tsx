@@ -7,13 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ResultCard } from "@/components/identification/result-card";
-import { Loader2, Music4, Mic, X, Waves, Pause } from "lucide-react";
+import { Loader2, Music4, Mic, X, Waves, Pause, PlusSquare } from "lucide-react";
 import placeHolderImages from "@/lib/placeholder-images.json";
 import { useTranslation } from "@/hooks/use-translation";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useUser, useFirestore } from "@/firebase";
 import { collection } from "firebase/firestore";
 import { addDocumentNonBlocking } from "@/firebase/non-blocking-updates";
+import Link from "next/link";
 
 export function SongIdentifier() {
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -251,6 +252,14 @@ export function SongIdentifier() {
           alternativeSpecies={result.alternativeSpecies}
         />
       )}
+       <div className="mt-8 text-center">
+            <Button asChild variant="outline">
+              <Link href="/register-bird">
+                <PlusSquare className="mr-2" />
+                Cadastrar Novo Pássaro
+              </Link>
+            </Button>
+        </div>
     </div>
   );
 }

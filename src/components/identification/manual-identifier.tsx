@@ -20,8 +20,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { birds, Bird } from "@/lib/birds";
-import { Search } from "lucide-react";
+import { Search, PlusSquare } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
+import Link from "next/link";
 
 
 type FormValues = {
@@ -176,6 +177,14 @@ export function ManualIdentifier() {
           <p>{t("noBirdsMatch")}</p>
         )}
       </div>
+       <div className="mt-8 text-center">
+            <Button asChild variant="outline">
+              <Link href="/register-bird">
+                <PlusSquare className="mr-2" />
+                Cadastrar Novo Pássaro
+              </Link>
+            </Button>
+        </div>
     </div>
   );
 }

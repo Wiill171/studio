@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ResultCard } from "@/components/identification/result-card";
-import { Loader2, Upload, Video, Camera, Zap, X, Pause } from "lucide-react";
+import { Loader2, Video, Camera, Zap, X, Pause, PlusSquare } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useUser, useFirestore } from "@/firebase";
 import { collection } from "firebase/firestore";
 import { addDocumentNonBlocking } from "@/firebase/non-blocking-updates";
+import Link from "next/link";
 
 export function VideoIdentifier() {
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -258,6 +259,14 @@ export function VideoIdentifier() {
           shareText={`${t("shareTextMessage")} ${result.species} ${t("shareTextMessageSuffix")}!`}
         />
       )}
+       <div className="mt-8 text-center">
+            <Button asChild variant="outline">
+              <Link href="/register-bird">
+                <PlusSquare className="mr-2" />
+                Cadastrar Novo Pássaro
+              </Link>
+            </Button>
+        </div>
     </div>
   );
 }
