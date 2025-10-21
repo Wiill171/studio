@@ -15,14 +15,18 @@ import { useTranslation } from "@/hooks/use-translation";
 import { useMemo } from "react";
 import Image from 'next/image';
 import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 
 interface Identification {
   id: string;
   species: string;
   date: string;
-  imageUrl: string;
-  method: 'photo' | 'song';
+  imageUrl?: string;
+  videoUrl?: string;
+  method: 'photo' | 'song' | 'video';
+  confidence?: number;
+  description?: string;
 }
 
 export default function HistoryPage() {
@@ -35,7 +39,7 @@ export default function HistoryPage() {
     return collection(firestore, `users/${user.uid}/identifications`);
   }, [user, firestore]);
 
-  const { data: history, loading } = useCollection<Identification>(historyCollection);
+  const { data: history, isLoading } = useCollection<Identification>(historyCollection);
 
   if (!user) {
     return <div className="container py-12 text-center">{t("pleaseLogInToViewHistory")}</div>;
@@ -50,27 +54,34 @@ export default function HistoryPage() {
             <CardDescription>{t("viewYourPastIdentifications")}</CardDescription>
           </CardHeader>
           <CardContent>
-            {loading && <div>{t("loadingHistory")}...</div>}
-            {!loading && history?.length === 0 && (
+            {isLoading && <div>{t("loadingHistory")}...</div>}
+            {!isLoading && history?.length === 0 && (
               <div className="text-center text-muted-foreground py-8">
-                <p>{t("noHistoryFound")}</p>
+                 <Alert>
+                    <AlertTitle>{t("noHistoryFound")}</AlertTitle>
+                    <AlertDescription>
+                    {t("noHistoryFound")}
+                    </AlertDescription>
+                </Alert>
               </div>
             )}
-            {!loading && history && history.length > 0 && (
+            {!isLoading && history && history.length > 0 && (
               <div className="space-y-4">
                 {history.map((item) => (
                   <Card key={item.id} className="flex items-center p-4 gap-4">
-                     <div className="relative w-24 h-24 rounded-md overflow-hidden">
-                        <Image src={item.imageUrl} alt={item.species} fill style={{objectFit: 'cover'}} />
+                     <div className="relative w-24 h-24 rounded-md overflow-hidden bg-muted">
+                        {item.imageUrl && <Image src={item.imageUrl} alt={item.species} fill style={{objectFit: 'cover'}} />}
+                        {item.videoUrl && <video src={item.videoUrl} className="w-full h-full object-cover" muted autoPlay loop />}
                     </div>
                     <div className="flex-1">
                       <h3 className="font-bold text-lg">{item.species}</h3>
                       <p className="text-sm text-muted-foreground">
                         {new Date(item.date).toLocaleDateString()}
                       </p>
+                      {item.confidence && <p className="text-xs text-primary">{t("confidence")}: {(item.confidence * 100).toFixed(0)}%</p>}
                     </div>
-                    <Badge variant={item.method === 'photo' ? 'default' : 'secondary'}>
-                      {t(item.method === 'photo' ? 'photo' : 'song')}
+                    <Badge variant={item.method === 'photo' ? 'default' : item.method === 'video' ? 'destructive' : 'secondary'}>
+                      {t(item.method)}
                     </Badge>
                   </Card>
                 ))}
