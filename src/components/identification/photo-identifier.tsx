@@ -12,7 +12,7 @@ import Image from "next/image";
 import { useTranslation } from "@/hooks/use-translation";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useUser, useFirestore } from "@/firebase";
-import { collection }mports "firebase/firestore";
+import { collection } from "firebase/firestore";
 import { addDocumentNonBlocking } from "@/firebase/non-blocking-updates";
 
 

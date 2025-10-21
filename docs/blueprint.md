@@ -1,22 +1,23 @@
-# **App Name**: Avis Explorer
+# **Nome do Aplicativo**: Avis Explorer
 
-## Core Features:
+## Principais Recursos:
 
-- Bird Identification via Image: Identify bird species from uploaded photos using a generative AI tool.
-- Bird Song Recognition: Identify bird species based on audio input of their songs.
-- Manual Bird Identification: Allow users to identify birds by manually inputting their descriptions (size, color, patterns, etc.).
-- User Authentication: Secure user accounts with login functionality.
-- Bird Database: Store bird information in a cloud database for retrieval and identification purposes.
-- Geolocation: Capture user's location to filter bird sightings and provide relevant information.
-- Sharing Functionality: Enable sharing of bird sightings and information via email and WhatsApp.
+- Identificação de Aves por Imagem: Identifique espécies de aves a partir de fotos enviadas usando uma ferramenta de IA generativa.
+- Reconhecimento de Canto de Aves: Identifique espécies de aves com base na entrada de áudio de seus cantos.
+- Identificação Manual de Aves: Permita que os usuários identifiquem aves inserindo manualmente suas descrições (tamanho, cor, padrões, etc.).
+- Autenticação de Usuário: Proteja as contas de usuário com funcionalidade de login.
+- Banco de Dados de Aves: Armazene informações sobre aves em um banco de dados na nuvem para fins de recuperação e identificação.
+- Geolocalização: Capture a localização do usuário para filtrar avistamentos de aves e fornecer informações relevantes.
+- Funcionalidade de Compartilhamento: Habilite o compartilhamento de avistamentos e informações de aves por e-mail e WhatsApp.
 
-## Style Guidelines:
+## Diretrizes de Estilo:
 
-- Primary color: Forest green (#3F704F) evoking nature and bird habitats.
-- Background color: Light beige (#F2EED3), a desaturated tone from the primary green.
-- Accent color: Burnt orange (#C45100), offering a contrasting visual element.
-- Headline font: 'Playfair', a modern serif with an elegant feel.
-- Body font: 'PT Sans', a humanist sans-serif which pairs well with 'Playfair'.
-- Use nature-themed icons with a minimalist design.
-- A clear, card-based design to display identified birds and details.
-- Subtle transitions on image loading and species identification.
+- Cor primária: Verde floresta (#3F704F), evocando a natureza e os habitats das aves.
+- Cor de fundo: Bege claro (#F2EED3), um tom dessaturado do verde primário.
+
+- Cor de destaque: Laranja queimado (#C45100), oferecendo um elemento visual contrastante.
+- Fonte do título: 'Playfair', uma serifa moderna com um toque elegante.
+- Fonte do corpo: 'PT Sans', uma sem serifa humanista que combina bem com 'Playfair'.
+- Use ícones com temas da natureza com um design minimalista.
+- Um design claro, baseado em cartões, para exibir pássaros identificados e detalhes.
+- Transições sutis no carregamento de imagens e na identificação de espécies.

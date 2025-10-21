@@ -29,7 +29,7 @@ export function SongIdentifier() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
 
-  const { user } = useFirestore();
+  const { user } = useUser();
   const firestore = useFirestore();
 
   useEffect(() => {
