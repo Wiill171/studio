@@ -1,8 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import { Camera, Mic, Search, Feather, Bird } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@/firebase";
+import { LoginForm } from "@/components/auth/login-form";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 
-export default function Home() {
+function HomePageContent() {
   return (
     <div className="flex flex-col items-center">
       <section className="w-full py-20 md:py-32 lg:py-40 bg-primary/10">
@@ -84,4 +95,38 @@ export default function Home() {
       </section>
     </div>
   );
+}
+
+export default function Home() {
+  const { user, isUserLoading } = useUser();
+
+  if (isUserLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="container flex h-full min-h-[calc(100vh-4rem)] items-center justify-center py-12">
+        <Card className="w-full max-w-md shadow-lg">
+          <CardHeader className="text-center">
+            <CardTitle className="font-headline text-3xl">
+              Bem-vindo de volta
+            </CardTitle>
+            <CardDescription>
+              Entre com suas credenciais para acessar sua conta.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <LoginForm />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return <HomePageContent />;
 }

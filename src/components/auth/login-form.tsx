@@ -81,12 +81,12 @@ export function LoginForm() {
           )}
         />
         <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? "Logging in..." : "Login"}
+          {form.formState.isSubmitting ? "Entrando..." : "Entrar"}
         </Button>
         <div className="text-center text-sm">
-          Don't have an account?{" "}
+          Não tem uma conta?{" "}
           <Link href="/signup" className="font-semibold text-primary underline-offset-4 hover:underline">
-            Sign up
+            Inscrever-se
           </Link>
         </div>
       </form>
