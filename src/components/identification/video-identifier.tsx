@@ -254,4 +254,10 @@ export function VideoIdentifier() {
           title={result.species}
           description={result.description}
           videoUrl={videoPreview}
-          confidence={result.confidence
+          confidence={result.confidence}
+          shareText={`${t("shareTextMessage")} ${result.species} ${t("shareTextMessageSuffix")}!`}
+        />
+      )}
+    </div>
+  );
+}
