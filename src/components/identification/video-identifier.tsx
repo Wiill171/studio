@@ -88,8 +88,8 @@ export function VideoIdentifier() {
       setHasCameraPermission(false);
       toast({
         variant: "destructive",
-        title: "Device Access Denied",
-        description: "Please enable camera and microphone permissions.",
+        title: "Acesso ao Dispositivo Negado",
+        description: "Por favor, ative as permissões de câmera e microfone.",
       });
     }
   };
@@ -188,13 +188,13 @@ export function VideoIdentifier() {
                     </div>
                      {hasCameraPermission === false && (
                         <Alert variant="destructive">
-                            <AlertTitle>Camera Access Denied</AlertTitle>
-                            <AlertDescription>Please allow camera access to use this feature.</AlertDescription>
+                            <AlertTitle>Acesso à Câmera Negado</AlertTitle>
+                            <AlertDescription>Por favor, permita o acesso à câmera para usar este recurso.</AlertDescription>
                         </Alert>
                     )}
                     <Button onClick={stopRecording} className="w-full" variant="destructive">
                         <Pause className="mr-2 h-4 w-4" />
-                        Stop Recording
+                        Parar Gravação
                     </Button>
                 </div>
             ) : (
@@ -213,7 +213,7 @@ export function VideoIdentifier() {
                         />
                         <Button onClick={startRecording} variant="outline" size="icon">
                             <Camera />
-                            <span className="sr-only">Record Video</span>
+                            <span className="sr-only">Gravar Vídeo</span>
                         </Button>
                     </div>
                     </div>
@@ -254,10 +254,4 @@ export function VideoIdentifier() {
           title={result.species}
           description={result.description}
           videoUrl={videoPreview}
-          confidence={result.confidence}
-          shareText={`${t("shareTextMessage")} ${result.species} ${t("shareTextMessageSuffix")}!`}
-        />
-      )}
-    </div>
-  );
-}
+          confidence={result.confidence

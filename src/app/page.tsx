@@ -25,14 +25,14 @@ function HomePageContent() {
                   Avis Explorer
                 </h1>
                 <p className="max-w-[600px] text-foreground/80 md:text-xl">
-                  Your ultimate guide to the avian world. Identify birds by
-                  their look, sound, or features. Start your journey now.
+                  Seu guia definitivo para o mundo das aves. Identifique pássaros
+                  pela aparência, som ou características. Comece sua jornada agora.
                 </p>
               </div>
               <div className="flex flex-col gap-2 min-[400px]:flex-row">
                 <Button asChild size="lg">
                   <Link href="/identify">
-                    <Bird className="mr-2 h-5 w-5" /> Start Identifying
+                    <Bird className="mr-2 h-5 w-5" /> Comece a Identificar
                   </Link>
                 </Button>
               </div>
@@ -47,15 +47,15 @@ function HomePageContent() {
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
               <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">
-                Key Features
+                Principais Recursos
               </div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline text-primary">
-                Powerful Identification Tools
+                Ferramentas de Identificação Poderosas
               </h2>
               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Whether you have a photo, a recording of a song, or just a
-                description, our advanced AI tools can help you identify the
-                bird you've encountered.
+                Se você tem uma foto, uma gravação de um canto ou apenas uma
+                descrição, nossas ferramentas avançadas de IA podem ajudá-lo a identificar o
+                pássaro que você encontrou.
               </p>
             </div>
           </div>
@@ -64,30 +64,30 @@ function HomePageContent() {
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/20 mb-4">
                 <Camera className="h-8 w-8 text-accent" />
               </div>
-              <h3 className="text-xl font-bold font-headline">Photo ID</h3>
+              <h3 className="text-xl font-bold font-headline">ID por Foto</h3>
               <p className="text-sm text-muted-foreground">
-                Upload a picture and let our AI analyze it for an instant
-                identification.
+                Envie uma foto e deixe nossa IA analisá-la para uma
+                identificação instantânea.
               </p>
             </div>
             <div className="grid gap-1 text-center">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/20 mb-4">
                 <Mic className="h-8 w-8 text-accent" />
               </div>
-              <h3 className="text-xl font-bold font-headline">Song ID</h3>
+              <h3 className="text-xl font-bold font-headline">ID por Canto</h3>
               <p className="text-sm text-muted-foreground">
-                Record a bird's song and we'll tell you which species it
-                belongs to.
+                Grave o canto de um pássaro e nós lhe diremos a qual espécie ele
+                pertence.
               </p>
             </div>
             <div className="grid gap-1 text-center">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/20 mb-4">
                 <Search className="h-8 w-8 text-accent" />
               </div>
-              <h3 className="text-xl font-bold font-headline">Manual ID</h3>
+              <h3 className="text-xl font-bold font-headline">ID Manual</h3>
               <p className="text-sm text-muted-foreground">
-                Use filters for size, color, and habitat to narrow down the
-                possibilities.
+                Use filtros de tamanho, cor e habitat para restringir as
+                possibilidades.
               </p>
             </div>
           </div>
@@ -103,7 +103,7 @@ export default function Home() {
   if (isUserLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <p>Loading...</p>
+        <p>Carregando...</p>
       </div>
     );
   }

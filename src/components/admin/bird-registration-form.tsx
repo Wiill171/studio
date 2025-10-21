@@ -31,12 +31,12 @@ import { collection } from "firebase/firestore";
 import { Badge } from "@/components/ui/badge";
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  description: z.string().min(10, { message: "Description must be at least 10 characters." }),
+  name: z.string().min(2, { message: "O nome deve ter pelo menos 2 caracteres." }),
+  description: z.string().min(10, { message: "A descrição deve ter pelo menos 10 caracteres." }),
   size: z.enum(["small", "medium", "large"]),
   habitat: z.enum(["forest", "wetland", "grassland", "urban"]),
-  primaryColor: z.string().min(1, { message: "Primary color is required." }),
-  globalRange: z.array(z.string()).min(1, { message: "At least one region is required."}),
+  primaryColor: z.string().min(1, { message: "A cor primária é obrigatória." }),
+  globalRange: z.array(z.string()).min(1, { message: "Pelo menos uma região é obrigatória."}),
 });
 
 export function BirdRegistrationForm() {
@@ -88,8 +88,8 @@ export function BirdRegistrationForm() {
     if (!firestore) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Firestore is not available.",
+        title: "Erro",
+        description: "Firestore não está disponível.",
       });
       setIsLoading(false);
       return;
@@ -114,8 +114,8 @@ export function BirdRegistrationForm() {
         await addDocumentNonBlocking(birdsCollection, birdData);
 
         toast({
-            title: "Bird Registered",
-            description: `${values.name} has been added to the database.`,
+            title: "Pássaro Cadastrado",
+            description: `${values.name} foi adicionado ao banco de dados.`,
         });
         form.reset();
         setPhotoFile(null);
@@ -124,7 +124,7 @@ export function BirdRegistrationForm() {
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Registration Failed",
+        title: "Falha no Cadastro",
         description: error.message,
       });
     } finally {
@@ -135,7 +135,7 @@ export function BirdRegistrationForm() {
   return (
     <Card className="max-w-2xl mx-auto">
         <CardHeader>
-            <CardTitle>Register a new bird</CardTitle>
+            <CardTitle>Cadastrar um novo pássaro</CardTitle>
         </CardHeader>
         <CardContent>
             <Form {...form}>
@@ -145,9 +145,9 @@ export function BirdRegistrationForm() {
                 name="name"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Bird Name</FormLabel>
+                    <FormLabel>Nome do Pássaro</FormLabel>
                     <FormControl>
-                        <Input placeholder="e.g., American Robin" {...field} />
+                        <Input placeholder="Ex: Sabiá-laranjeira" {...field} />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
@@ -158,9 +158,9 @@ export function BirdRegistrationForm() {
                 name="description"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Descrição</FormLabel>
                     <FormControl>
-                        <Textarea placeholder="Describe the bird's appearance, behavior, etc." {...field} />
+                        <Textarea placeholder="Descreva a aparência, comportamento, etc." {...field} />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
@@ -172,17 +172,17 @@ export function BirdRegistrationForm() {
                         name="size"
                         render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Size</FormLabel>
+                            <FormLabel>Tamanho</FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                                 <SelectTrigger>
-                                <SelectValue placeholder="Select size" />
+                                <SelectValue placeholder="Selecione o tamanho" />
                                 </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                                <SelectItem value="small">Small</SelectItem>
-                                <SelectItem value="medium">Medium</SelectItem>
-                                <SelectItem value="large">Large</SelectItem>
+                                <SelectItem value="small">Pequeno</SelectItem>
+                                <SelectItem value="medium">Médio</SelectItem>
+                                <SelectItem value="large">Grande</SelectItem>
                             </SelectContent>
                             </Select>
                             <FormMessage />
@@ -194,20 +194,20 @@ export function BirdRegistrationForm() {
                         name="primaryColor"
                         render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Primary Color</FormLabel>
+                            <FormLabel>Cor Primária</FormLabel>
                              <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                     <SelectTrigger>
-                                    <SelectValue placeholder="Select color" />
+                                    <SelectValue placeholder="Selecione a cor" />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    <SelectItem value="brown">Brown</SelectItem>
-                                    <SelectItem value="red">Red</SelectItem>
-                                    <SelectItem value="blue">Blue</SelectItem>
-                                    <SelectItem value="yellow">Yellow</SelectItem>
-                                    <SelectItem value="black">Black</SelectItem>
-                                    <SelectItem value="white">White</SelectItem>
+                                    <SelectItem value="brown">Marrom</SelectItem>
+                                    <SelectItem value="red">Vermelho</SelectItem>
+                                    <SelectItem value="blue">Azul</SelectItem>
+                                    <SelectItem value="yellow">Amarelo</SelectItem>
+                                    <SelectItem value="black">Preto</SelectItem>
+                                    <SelectItem value="white">Branco</SelectItem>
                                 </SelectContent>
                             </Select>
                             <FormMessage />
@@ -223,14 +223,14 @@ export function BirdRegistrationForm() {
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                                 <SelectTrigger>
-                                <SelectValue placeholder="Select habitat" />
+                                <SelectValue placeholder="Selecione o habitat" />
                                 </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                                <SelectItem value="forest">Forest</SelectItem>
-                                <SelectItem value="wetland">Wetland</SelectItem>
-                                <SelectItem value="grassland">Grassland</SelectItem>
-                                <SelectItem value="urban">Urban</SelectItem>
+                                <SelectItem value="forest">Floresta</SelectItem>
+                                <SelectItem value="wetland">Área Úmida</SelectItem>
+                                <SelectItem value="grassland">Campo</SelectItem>
+                                <SelectItem value="urban">Urbano</SelectItem>
                             </SelectContent>
                             </Select>
                              <FormMessage />
@@ -243,11 +243,11 @@ export function BirdRegistrationForm() {
                   name="globalRange"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Global Range</FormLabel>
+                      <FormLabel>Área de Abrangência Global</FormLabel>
                       <FormControl>
                         <>
                           <Input
-                            placeholder="e.g., North America, Europe. Press Enter to add."
+                            placeholder="Ex: América do Sul, Europa. Pressione Enter para adicionar."
                             value={rangeInput}
                             onChange={(e) => setRangeInput(e.target.value)}
                             onKeyDown={handleRangeKeyDown}
@@ -270,21 +270,21 @@ export function BirdRegistrationForm() {
                 />
 
                  <FormItem>
-                    <FormLabel>Photo</FormLabel>
+                    <FormLabel>Foto</FormLabel>
                     <FormControl>
                         <Input type="file" accept="image/*" onChange={(e) => setPhotoFile(e.target.files?.[0] || null)} />
                     </FormControl>
                 </FormItem>
 
                  <FormItem>
-                    <FormLabel>Song (Audio)</FormLabel>
+                    <FormLabel>Canto (Áudio)</FormLabel>
                     <FormControl>
                         <Input type="file" accept="audio/*" onChange={(e) => setSongFile(e.target.files?.[0] || null)} />
                     </FormControl>
                 </FormItem>
 
                  <FormItem>
-                    <FormLabel>Video</FormLabel>
+                    <FormLabel>Vídeo</FormLabel>
                     <FormControl>
                         <Input type="file" accept="video/*" onChange={(e) => setVideoFile(e.target.files?.[0] || null)} />
                     </FormControl>
@@ -294,18 +294,13 @@ export function BirdRegistrationForm() {
                 {isLoading ? (
                     <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Registering...
+                    Cadastrando...
                     </>
                 ) : (
                     <>
                     <Upload className="mr-2 h-4 w-4" />
-                    Register Bird
+                    Cadastrar Pássaro
                     </>
                 )}
                 </Button>
-            </form>
-            </Form>
-        </CardContent>
-    </Card>
-  );
-}
+            </form

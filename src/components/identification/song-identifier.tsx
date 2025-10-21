@@ -94,8 +94,8 @@ export function SongIdentifier() {
       setHasMicPermission(false);
       toast({
         variant: "destructive",
-        title: "Microphone Access Denied",
-        description: "Please enable microphone permissions in your browser settings.",
+        title: "Acesso ao Microfone Negado",
+        description: "Por favor, ative as permissões do microfone nas configurações do seu navegador.",
       });
     }
   };
@@ -194,7 +194,7 @@ export function SongIdentifier() {
                     />
                     <Button onClick={isRecording ? stopRecording : startRecording} variant="outline" size="icon">
                         {isRecording ? <Pause /> : <Mic />}
-                        <span className="sr-only">{isRecording ? "Stop Recording" : "Start Recording"}</span>
+                        <span className="sr-only">{isRecording ? "Parar Gravação" : "Iniciar Gravação"}</span>
                     </Button>
                 </div>
             </div>
@@ -202,21 +202,21 @@ export function SongIdentifier() {
             {isRecording && (
                  <div className="flex flex-col items-center justify-center space-y-2 rounded-md border p-4 bg-primary/5 animate-pulse">
                     <Waves className="h-10 w-10 text-primary"/>
-                    <p className="text-sm font-medium text-primary">Recording...</p>
+                    <p className="text-sm font-medium text-primary">Gravando...</p>
                  </div>
             )}
             
             {hasMicPermission === false && (
                 <Alert variant="destructive">
-                    <AlertTitle>Microphone Access Denied</AlertTitle>
-                    <AlertDescription>Please allow microphone access to use this feature.</AlertDescription>
+                    <AlertTitle>Acesso ao Microfone Negado</AlertTitle>
+                    <AlertDescription>Por favor, permita o acesso ao microfone para usar este recurso.</AlertDescription>
                 </Alert>
             )}
 
             {audioPreview && !isRecording && (
               <div className="relative flex flex-col items-center justify-center space-y-2 rounded-md border p-4">
                 <Music4 className="h-10 w-10 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground">{audioFile?.name || "Recorded Audio"}</p>
+                <p className="text-sm text-muted-foreground">{audioFile?.name || "Áudio Gravado"}</p>
                 <audio controls src={audioPreview} className="w-full" />
                 <Button onClick={clearPreview} variant="ghost" size="icon" className="absolute top-2 right-2">
                     <X className="h-4 w-4"/>
@@ -247,7 +247,7 @@ export function SongIdentifier() {
           description={`${t("identifiedFromSongText")} ${(result.confidence * 100).toFixed(0)}%.`}
           imageUrl={randomImageUrl}
           confidence={result.confidence}
-          shareText={`${t("shareTextMessageSong")} ${result.species} ${t("shareTextMessageSuffix")}!`}
+          shareText={`${t("shareTextMessageSong")} ${result.species} ${t("shareTextMessageSuffix")}`}
           alternativeSpecies={result.alternativeSpecies}
         />
       )}

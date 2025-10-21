@@ -59,10 +59,10 @@ export default function IdentifyPage() {
             <Button asChild variant="outline">
               <Link href="/register-bird">
                 <PlusSquare className="mr-2" />
-                Register New Bird
+                Cadastrar Novo Pássaro
               </Link>
             </Button>
-          </div>
+        </div>
       </div>
     </div>
   );

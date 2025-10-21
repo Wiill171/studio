@@ -12,15 +12,9 @@ export default function LoginPage() {
     <div className="container flex h-full min-h-[calc(100vh-4rem)] items-center justify-center py-12">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="text-center">
-          <CardTitle className="font-headline text-3xl">Welcome Back</CardTitle>
+          <CardTitle className="font-headline text-3xl">Bem-vindo de Volta</CardTitle>
           <CardDescription>
-            Enter your credentials to access your account.
+            Entre com suas credenciais para acessar sua conta.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <LoginForm />
-        </CardContent>
-      </Card>
-    </div>
-  );
-}

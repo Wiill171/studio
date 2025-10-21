@@ -12,9 +12,9 @@ export default function SignupPage() {
     <div className="container flex h-full min-h-[calc(100vh-4rem)] items-center justify-center py-12">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="text-center">
-          <CardTitle className="font-headline text-3xl">Create an Account</CardTitle>
+          <CardTitle className="font-headline text-3xl">Crie uma Conta</CardTitle>
           <CardDescription>
-            Join Avis Explorer and start your birdwatching journey.
+            Junte-se ao Avis Explorer e comece sua jornada de observação de pássaros.
           </CardDescription>
         </CardHeader>
         <CardContent>

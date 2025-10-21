@@ -21,9 +21,9 @@ import { useRouter } from "next/navigation";
 
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  email: z.string().email({ message: "Invalid email address." }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+  name: z.string().min(2, { message: "O nome deve ter pelo menos 2 caracteres." }),
+  email: z.string().email({ message: "Endereço de e-mail inválido." }),
+  password: z.string().min(6, { message: "A senha deve ter pelo menos 6 caracteres." }),
 });
 
 export function SignupForm() {
@@ -50,8 +50,8 @@ export function SignupForm() {
     } catch (error: any) {
        toast({
         variant: "destructive",
-        title: "Sign-up Failed",
-        description: error.message,
+        title: "Falha no Cadastro",
+        description: "Não foi possível criar a conta. Tente novamente.",
       });
     }
   }
@@ -64,9 +64,9 @@ export function SignupForm() {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Nome</FormLabel>
               <FormControl>
-                <Input placeholder="John Doe" {...field} />
+                <Input placeholder="João da Silva" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -79,7 +79,7 @@ export function SignupForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="you@example.com" {...field} />
+                <Input placeholder="voce@exemplo.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -90,7 +90,7 @@ export function SignupForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Senha</FormLabel>
               <FormControl>
                 <Input type="password" placeholder="••••••••" {...field} />
               </FormControl>
@@ -99,15 +99,13 @@ export function SignupForm() {
           )}
         />
         <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? "Creating account..." : "Create Account" }
+          {form.formState.isSubmitting ? "Criando conta..." : "Criar Conta" }
         </Button>
         <div className="text-center text-sm">
-          Already have an account?{" "}
+          Já tem uma conta?{" "}
           <Link href="/login" className="underline text-primary">
-            Login
+            Entrar
           </Link>
         </div>
       </form>
-    </Form>
-  );
-}
+    </Form

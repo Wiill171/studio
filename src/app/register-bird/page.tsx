@@ -7,10 +7,10 @@ export default function RegisterBirdPage() {
     <div className="container py-12">
       <div className="mx-auto max-w-2xl text-center">
         <h1 className="font-headline text-4xl font-bold text-primary">
-          Register New Bird
+          Cadastrar Novo Pássaro
         </h1>
         <p className="mt-4 text-lg text-foreground/80">
-          Add a new bird to the database. Provide its details, including photo, song, and video if available.
+          Adicione um novo pássaro ao banco de dados. Forneça seus detalhes, incluindo foto, canto e vídeo, se disponíveis.
         </p>
       </div>
       <div className="mt-12">

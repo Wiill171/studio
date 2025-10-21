@@ -49,7 +49,7 @@ export function PhotoIdentifier() {
           toast({
             variant: "destructive",
             title: t("locationAccessDenied"),
-            description: "Please enable camera permissions in your browser settings.",
+            description: "Por favor, ative as permissões da câmera no seu navegador.",
           });
           setIsCapturing(false);
         }
@@ -156,17 +156,17 @@ export function PhotoIdentifier() {
                     </div>
                      {hasCameraPermission === false && (
                         <Alert variant="destructive">
-                            <AlertTitle>{t("locationAccessDenied")}</AlertTitle>
-                            <AlertDescription>Please allow camera access to use this feature.</AlertDescription>
+                            <AlertTitle>Acesso à Câmera Negado</AlertTitle>
+                            <AlertDescription>Por favor, permita o acesso à câmera para usar este recurso.</AlertDescription>
                         </Alert>
                     )}
                     <div className="flex gap-2">
                         <Button onClick={handleCapture} disabled={!hasCameraPermission} className="w-full">
                             <Camera className="mr-2 h-4 w-4" />
-                            {t("identifying")}
+                            Capturar Foto
                         </Button>
                         <Button onClick={() => setIsCapturing(false)} variant="outline" className="w-full">
-                            {t("login")}
+                            Cancelar
                         </Button>
                     </div>
                 </div>
@@ -186,7 +186,7 @@ export function PhotoIdentifier() {
                             />
                             <Button onClick={() => setIsCapturing(true)} variant="outline" size="icon">
                                 <Camera />
-                                <span className="sr-only">Use Camera</span>
+                                <span className="sr-only">Usar Câmera</span>
                             </Button>
                         </div>
                     </div>
