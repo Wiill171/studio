@@ -43,7 +43,7 @@ export function VideoIdentifier() {
 
   const saveIdentification = async (identificationResult: IdentifyBirdFromVideoOutput, videoUrl: string) => {
     if (!user || !firestore) return;
-    const historyCollection = collection(firestore, `users/${user.uid}/identifications`);
+    const historyCollection = collection(firestore, `users/${user.uid}/sightings`);
     const identificationData = {
         species: identificationResult.species,
         date: new Date().toISOString(),

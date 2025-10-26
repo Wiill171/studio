@@ -46,7 +46,7 @@ export function SongIdentifier() {
     if (!user || !firestore) return;
     const randomImageUrl = placeHolderImages.placeholderImages.find(p => p.id === "bird-song-generic")?.imageUrl || "https://picsum.photos/seed/birdsong/600/400";
     
-    const historyCollection = collection(firestore, `users/${user.uid}/identifications`);
+    const historyCollection = collection(firestore, `users/${user.uid}/sightings`);
     const identificationData = {
         species: identificationResult.species,
         date: new Date().toISOString(),

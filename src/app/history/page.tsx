@@ -36,7 +36,7 @@ export default function HistoryPage() {
 
   const historyCollection = useMemo(() => {
     if (!user || !firestore) return null;
-    return collection(firestore, `users/${user.uid}/identifications`);
+    return collection(firestore, `users/${user.uid}/sightings`);
   }, [user, firestore]);
 
   const { data: history, isLoading } = useCollection<Identification>(historyCollection);

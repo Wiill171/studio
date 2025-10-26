@@ -97,7 +97,7 @@ export function PhotoIdentifier() {
   const saveIdentification = async (identificationResult: IdentifyBirdFromPhotoOutput, imageUrl: string) => {
     if (!user || !firestore) return;
 
-    const historyCollection = collection(firestore, `users/${user.uid}/identifications`);
+    const historyCollection = collection(firestore, `users/${user.uid}/sightings`);
     const identificationData = {
       species: identificationResult.species,
       date: new Date().toISOString(),
