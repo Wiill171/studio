@@ -25,7 +25,8 @@ export default function RootLayout({
       <body className="font-body antialiased">
         <FirebaseClientProvider>
           <LanguageProvider>
-            <div className="flex min-h-screen w-full flex-col bg-background/80 backdrop-blur-sm">
+            <div className="relative flex min-h-screen w-full flex-col">
+              <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-[-1]"></div>
               <Header />
               <main className="flex-1">{children}</main>
             </div>
