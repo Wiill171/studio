@@ -17,6 +17,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     const storedLang = localStorage.getItem('avis-explorer-lang') as Language | null;
     if (storedLang) {
       setLanguage(storedLang);
+    } else {
+      setLanguage('pt');
     }
   }, []);
 
