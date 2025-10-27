@@ -42,17 +42,19 @@ const prompt = ai.definePrompt({
   name: 'identifyBirdFromSongPrompt',
   input: {schema: IdentifyBirdFromSongInputSchema},
   output: {schema: IdentifyBirdFromSongOutputSchema},
-  prompt: `You are an expert ornithologist specializing in identifying birds by their songs.
+  prompt: `Você é um ornitólogo especialista em identificar pássaros por seus cantos.
 
-You will use the provided audio recording to identify the bird species.
+Você usará a gravação de áudio fornecida para identificar a espécie do pássaro.
 
-Analyze the following audio recording:
+Analise a seguinte gravação de áudio:
 
 {{media url=audioDataUri}}
 
-Output the identified species, your confidence level (0-1), and any alternative species suggestions.
+Produza a espécie identificada, seu nível de confiança (0-1) e quaisquer sugestões de espécies alternativas.
 
-Ensure the output is formatted as a JSON object matching the IdentifyBirdFromSongOutputSchema. The confidence should be high if the song is clear.
+Responda em português do Brasil.
+
+Certifique-se de que a saída esteja formatada como um objeto JSON que corresponda ao IdentifyBirdFromSongOutputSchema. A confiança deve ser alta se o canto for claro.
 `,
 });
 

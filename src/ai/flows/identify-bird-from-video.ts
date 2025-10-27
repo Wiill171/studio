@@ -35,11 +35,13 @@ const prompt = ai.definePrompt({
   name: 'identifyBirdFromVideoPrompt',
   input: {schema: IdentifyBirdFromVideoInputSchema},
   output: {schema: IdentifyBirdFromVideoOutputSchema},
-  prompt: `You are an expert ornithologist. Your task is to identify the species of a bird from a video.
+  prompt: `Você é um ornitólogo especialista. Sua tarefa é identificar a espécie de um pássaro a partir de um vídeo.
 
-  Analyze the following video and provide the species name, a confidence level (0-1), and a brief description of the bird. The bird might be moving, so analyze the frames to get a clear identification.
+  Analise o vídeo a seguir e forneça o nome da espécie, um nível de confiança (0-1) e uma breve descrição da ave. O pássaro pode estar se movendo, então analise os quadros para obter uma identificação clara.
 
-  Video: {{media url=videoDataUri}}
+  Responda em português do Brasil.
+
+  Vídeo: {{media url=videoDataUri}}
   {
     "species": "string",
     "confidence": number,

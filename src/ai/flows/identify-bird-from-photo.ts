@@ -35,11 +35,13 @@ const prompt = ai.definePrompt({
   name: 'identifyBirdFromPhotoPrompt',
   input: {schema: IdentifyBirdFromPhotoInputSchema},
   output: {schema: IdentifyBirdFromPhotoOutputSchema},
-  prompt: `You are an expert ornithologist. Your task is to identify the species of a bird from a photo.
+  prompt: `Você é um ornitólogo especialista. Sua tarefa é identificar a espécie de um pássaro a partir de uma foto.
 
-  Analyze the following photo and provide the species name, a confidence level (0-1), and a brief description of the bird.
+  Analise a foto a seguir e forneça o nome da espécie, um nível de confiança (0-1) e uma breve descrição da ave.
 
-  Photo: {{media url=photoDataUri}}
+  Responda em português do Brasil.
+
+  Foto: {{media url=photoDataUri}}
   {
     "species": "string",
     "confidence": number,
