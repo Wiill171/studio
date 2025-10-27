@@ -8,55 +8,55 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
-import { birds, Bird } from "@/lib/birds";
-import { Search, PlusSquare } from "lucide-react";
+import { Search, PlusSquare, Loader2 } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import Link from "next/link";
+import { Textarea } from "../ui/textarea";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { identifyBirdFromDescription, IdentifyBirdFromDescriptionOutput } from "@/ai/flows/identify-bird-from-description";
+import { useToast } from "@/hooks/use-toast";
+import { Progress } from "../ui/progress";
 
+const formSchema = z.object({
+  description: z.string().min(10, { message: "A descrição deve ter pelo menos 10 caracteres." }),
+});
 
-type FormValues = {
-  size: string;
-  color: string;
-  habitat: string;
-};
 
 export function ManualIdentifier() {
-  const [results, setResults] = useState<Bird[]>([]);
+  const [results, setResults] = useState<IdentifyBirdFromDescriptionOutput | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
+  const { toast } = useToast();
 
-  const form = useForm<FormValues>({
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      size: "all",
-      color: "all",
-      habitat: "all",
+      description: "",
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    let filteredBirds = birds;
-
-    if (data.size !== "all") {
-      filteredBirds = filteredBirds.filter((bird) => bird.size === data.size);
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
+    setResults(null);
+    try {
+        const response = await identifyBirdFromDescription({ description: data.description });
+        setResults(response);
+    } catch (error) {
+        console.error("Error identifying bird from description:", error);
+        toast({
+            title: t("identificationFailedToastTitle"),
+            description: t("identificationFailedToastDescription"),
+            variant: "destructive",
+        });
+    } finally {
+        setIsLoading(false);
     }
-    if (data.color !== "all") {
-      filteredBirds = filteredBirds.filter((bird) => bird.colors.includes(data.color));
-    }
-    if (data.habitat !== "all") {
-        filteredBirds = filteredBirds.filter((bird) => bird.habitat === data.habitat);
-    }
-
-    setResults(filteredBirds);
   };
 
   return (
@@ -64,119 +64,85 @@ export function ManualIdentifier() {
       <Card>
         <CardHeader>
           <CardTitle className="font-headline">{t("describeTheBird")}</CardTitle>
-          <CardDescription>{t("selectBirdFeatures")}</CardDescription>
+          <CardDescription>{t("manualIdentifierDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
-                name="size"
+                name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("size")}</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("selectSize")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="all">{t("anySize")}</SelectItem>
-                        <SelectItem value="small">{t("small")}</SelectItem>
-                        <SelectItem value="medium">{t("medium")}</SelectItem>
-                        <SelectItem value="large">{t("large")}</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormLabel>Descrição do Pássaro</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Ex: um pássaro pequeno, com peito vermelho e que vive na cidade."
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="color"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("primaryColor")}</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("selectColor")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="all">{t("anyColor")}</SelectItem>
-                        <SelectItem value="brown">{t("brown")}</SelectItem>
-                        <SelectItem value="red">{t("red")}</SelectItem>
-                        <SelectItem value="blue">{t("blue")}</SelectItem>
-                        <SelectItem value="yellow">{t("yellow")}</SelectItem>
-                        <SelectItem value="black">{t("black")}</SelectItem>
-                        <SelectItem value="white">{t("white")}</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                 {isLoading ? (
+                    <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        {t("identifying")}...
+                    </>
+                    ) : (
+                    <>
+                        <Search className="mr-2 h-4 w-4" /> {t("search")}
+                    </>
                 )}
-              />
-              <FormField
-                control={form.control}
-                name="habitat"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("habitat")}</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("selectHabitat")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="all">{t("anyHabitat")}</SelectItem>
-                        <SelectItem value="forest">{t("forest")}</SelectItem>
-                        <SelectItem value="wetland">{t("wetland")}</SelectItem>
-                        <SelectItem value="grassland">{t("grassland")}</SelectItem>
-                        <SelectItem value="urban">{t("urban")}</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full">
-                <Search className="mr-2 h-4 w-4" /> {t("search")}
               </Button>
             </form>
           </Form>
         </CardContent>
       </Card>
 
-      <div className="space-y-4">
-        <h3 className="font-headline text-2xl">
-          {results.length} {results.length === 1 ? t("matchFound") : t("matchesFound")}
-        </h3>
-        {results.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {results.map((bird) => (
-              <Card key={bird.id}>
-                <CardContent className="p-0">
-                  <div className="relative w-full aspect-square">
-                    <Image
-                      src={bird.imageUrl}
-                      alt={bird.name}
-                      fill
-                      className="rounded-t-lg object-cover"
-                      data-ai-hint={bird.imageHint}
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h4 className="font-bold">{bird.name}</h4>
-                    <p className="text-sm text-muted-foreground">{bird.description}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <p>{t("noBirdsMatch")}</p>
-        )}
-      </div>
+      {results && (
+        <div className="space-y-4">
+            <h3 className="font-headline text-2xl">
+                {results.birds.length} {results.birds.length === 1 ? t("matchFound") : t("matchesFound")}
+            </h3>
+            {results.birds.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {results.birds.map((bird) => (
+                <Card key={bird.name}>
+                    <CardContent className="p-0">
+                    <div className="relative w-full aspect-square">
+                        <Image
+                        src={bird.imageUrl || "https://picsum.photos/seed/bird/600/600"}
+                        alt={bird.name}
+                        fill
+                        className="rounded-t-lg object-cover"
+                        data-ai-hint={bird.imageHint}
+                        />
+                    </div>
+                    <div className="p-4 space-y-2">
+                        <h4 className="font-bold">{bird.name}</h4>
+                        <p className="text-sm text-muted-foreground">{bird.description}</p>
+                        <div className="space-y-1">
+                            <div className="flex justify-between items-center text-xs">
+                                <span className="font-medium">{t("confidence")}</span>
+                                <span>{(bird.confidence * 100).toFixed(0)}%</span>
+                            </div>
+                            <Progress value={bird.confidence * 100} />
+                        </div>
+                    </div>
+                    </CardContent>
+                </Card>
+                ))}
+            </div>
+            ) : (
+            <p>{t("noBirdsMatch")}</p>
+            )}
+        </div>
+      )}
+
        <div className="mt-8 text-center">
             <Button asChild variant="outline">
               <Link href="/register-bird">
