@@ -1,12 +1,43 @@
 "use client";
 
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PhotoIdentifier } from "@/components/identification/photo-identifier";
-import { SongIdentifier } from "@/components/identification/song-identifier";
-import { ManualIdentifier } from "@/components/identification/manual-identifier";
-import { VideoIdentifier } from "@/components/identification/video-identifier";
 import { Camera, Mic, Search, Video } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const PhotoIdentifier = dynamic(
+  () => import("@/components/identification/photo-identifier").then(mod => mod.PhotoIdentifier),
+  { ssr: false, loading: () => <IdentifierSkeleton /> }
+);
+const VideoIdentifier = dynamic(
+  () => import("@/components/identification/video-identifier").then(mod => mod.VideoIdentifier),
+  { ssr: false, loading: () => <IdentifierSkeleton /> }
+);
+const SongIdentifier = dynamic(
+  () => import("@/components/identification/song-identifier").then(mod => mod.SongIdentifier),
+  { ssr: false, loading: () => <IdentifierSkeleton /> }
+);
+const ManualIdentifier = dynamic(
+  () => import("@/components/identification/manual-identifier").then(mod => mod.ManualIdentifier),
+  { ssr: false, loading: () => <IdentifierSkeleton /> }
+);
+
+function IdentifierSkeleton() {
+  return (
+    <div className="mt-12">
+      <Card>
+        <CardContent className="p-6 space-y-4">
+          <Skeleton className="h-8 w-1/3" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-40 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
 
 export default function IdentifyPage() {
   const { t } = useTranslation();
@@ -33,24 +64,32 @@ export default function IdentifyPage() {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="photo">
-            <div className="mt-8">
-              <PhotoIdentifier />
-            </div>
+            <Suspense fallback={<IdentifierSkeleton />}>
+              <div className="mt-8">
+                <PhotoIdentifier />
+              </div>
+            </Suspense>
           </TabsContent>
           <TabsContent value="video">
-            <div className="mt-8">
-              <VideoIdentifier />
-            </div>
+            <Suspense fallback={<IdentifierSkeleton />}>
+              <div className="mt-8">
+                <VideoIdentifier />
+              </div>
+            </Suspense>
           </TabsContent>
           <TabsContent value="song">
-            <div className="mt-8">
-              <SongIdentifier />
-            </div>
+            <Suspense fallback={<IdentifierSkeleton />}>
+              <div className="mt-8">
+                <SongIdentifier />
+              </div>
+            </Suspense>
           </TabsContent>
           <TabsContent value="manual">
-            <div className="mt-8">
-              <ManualIdentifier />
-            </div>
+            <Suspense fallback={<IdentifierSkeleton />}>
+              <div className="mt-8">
+                <ManualIdentifier />
+              </div>
+            </Suspense>
           </TabsContent>
         </Tabs>
       </div>
