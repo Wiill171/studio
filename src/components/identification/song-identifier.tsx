@@ -50,7 +50,7 @@ export function SongIdentifier() {
     const identificationData = {
         species: identificationResult.species,
         date: new Date().toISOString(),
-        imageUrl: randomImageUrl,
+        imageUrl: randomImageUrl, // Storing a placeholder image URL for song
         method: "song",
         confidence: identificationResult.confidence,
         alternativeSpecies: identificationResult.alternativeSpecies,
@@ -124,7 +124,19 @@ export function SongIdentifier() {
   };
   
   const handleSubmit = async (audioDataUri?: string) => {
-    if (!audioPreview && !audioDataUri) {
+    let dataUriToSubmit = audioDataUri;
+    
+    if (!dataUriToSubmit && audioFile) {
+        dataUriToSubmit = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(audioFile);
+        });
+    }
+
+
+    if (!dataUriToSubmit) {
       toast({
         title: t("noAudioFileSelectedToastTitle"),
         description: t("noAudioFileSelectedToastDescription"),
@@ -137,19 +149,6 @@ export function SongIdentifier() {
     setResult(null);
   
     try {
-      // Ensure we have a data URI
-      let dataUriToSubmit = audioDataUri;
-      if (!dataUriToSubmit && audioFile) {
-        dataUriToSubmit = await new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result as string);
-          reader.onerror = reject;
-          reader.readAsDataURL(audioFile);
-        });
-      }
-      
-      if (!dataUriToSubmit) throw new Error("Could not process audio file.");
-
       const result = await identifyBirdFromSong({ audioDataUri: dataUriToSubmit });
       setResult(result);
       await saveIdentification(result, dataUriToSubmit);
