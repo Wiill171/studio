@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Camera, Mic, Search, Video } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent } from "@/components/ui/card";
 
 const PhotoIdentifier = dynamic(
   () => import("@/components/identification/photo-identifier").then(mod => mod.PhotoIdentifier),
