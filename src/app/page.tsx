@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Camera, Mic, Search, Feather, Bird } from "lucide-react";
+import { Camera, Mic, Search, Feather, Bird, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/firebase";
 import { LoginForm } from "@/components/auth/login-form";
@@ -12,6 +12,31 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+
+function FeatureCard({
+  icon,
+  title,
+  href,
+  children,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link href={href} className="group">
+      <div className="grid gap-1 text-center h-full p-4 rounded-lg transition-colors hover:bg-accent/10">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/20 mb-4 transition-transform group-hover:scale-110">
+          {icon}
+        </div>
+        <h3 className="text-xl font-bold font-headline">{title}</h3>
+        <p className="text-sm text-muted-foreground">{children}</p>
+      </div>
+    </Link>
+  );
+}
 
 function HomePageContent() {
   return (
@@ -53,43 +78,28 @@ function HomePageContent() {
                 Ferramentas de Identificação Poderosas
               </h2>
               <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Se você tem uma foto, uma gravação de um canto ou apenas uma
+                Se você tem uma foto, um vídeo, uma gravação de um canto ou apenas uma
                 descrição, nossas ferramentas avançadas de IA podem ajudá-lo a identificar o
                 pássaro que você encontrou.
               </p>
             </div>
           </div>
-          <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:max-w-none lg:grid-cols-3 mt-12">
-            <div className="grid gap-1 text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/20 mb-4">
-                <Camera className="h-8 w-8 text-accent" />
-              </div>
-              <h3 className="text-xl font-bold font-headline">ID por Foto</h3>
-              <p className="text-sm text-muted-foreground">
-                Envie uma foto e deixe nossa IA analisá-la para uma
-                identificação instantânea.
-              </p>
-            </div>
-            <div className="grid gap-1 text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/20 mb-4">
-                <Mic className="h-8 w-8 text-accent" />
-              </div>
-              <h3 className="text-xl font-bold font-headline">ID por Canto</h3>
-              <p className="text-sm text-muted-foreground">
-                Grave o canto de um pássaro e nós lhe diremos a qual espécie ele
-                pertence.
-              </p>
-            </div>
-            <div className="grid gap-1 text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent/20 mb-4">
-                <Search className="h-8 w-8 text-accent" />
-              </div>
-              <h3 className="text-xl font-bold font-headline">ID Manual</h3>
-              <p className="text-sm text-muted-foreground">
-                Use filtros de tamanho, cor e habitat para restringir as
-                possibilidades.
-              </p>
-            </div>
+          <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-2 md:gap-12 lg:max-w-none lg:grid-cols-4 mt-12">
+            <FeatureCard href="/identify/photo" title="ID por Foto" icon={<Camera className="h-8 w-8 text-accent" />}>
+              Envie uma foto e deixe nossa IA analisá-la para uma
+              identificação instantânea.
+            </FeatureCard>
+            <FeatureCard href="/identify/video" title="ID por Vídeo" icon={<Video className="h-8 w-8 text-accent" />}>
+              Envie um vídeo curto e nossa IA identificará o pássaro.
+            </FeatureCard>
+            <FeatureCard href="/identify/song" title="ID por Canto" icon={<Mic className="h-8 w-8 text-accent" />}>
+              Grave o canto de um pássaro e nós lhe diremos a qual espécie ele
+              pertence.
+            </FeatureCard>
+            <FeatureCard href="/identify/manual" title="ID Manual" icon={<Search className="h-8 w-8 text-accent" />}>
+              Use filtros de tamanho, cor e habitat para restringir as
+              possibilidades.
+            </FeatureCard>
           </div>
         </div>
       </section>
