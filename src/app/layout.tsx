@@ -25,7 +25,10 @@ export default function RootLayout({
       <body className="font-body antialiased">
         <FirebaseClientProvider>
           <LanguageProvider>
-            <div className="relative flex min-h-screen w-full flex-col">
+            <div 
+              className="relative flex min-h-screen w-full flex-col bg-cover bg-center bg-fixed"
+              style={{ backgroundImage: "url('/arara.jpg')" }}
+            >
               <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-[-1]"></div>
               <Header />
               <main className="flex-1">{children}</main>
