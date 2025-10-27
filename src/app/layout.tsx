@@ -3,7 +3,22 @@ import { Toaster } from "@/components/ui/toaster";
 import { Header } from "@/components/layout/header";
 import { LanguageProvider } from "@/context/language-context";
 import { FirebaseClientProvider } from "@/firebase/client-provider";
+import { Playfair_Display, PT_Sans } from "next/font/google";
+import { cn } from "@/lib/utils";
 import "./globals.css";
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair-display",
+  weight: "700",
+});
+
+const ptSans = PT_Sans({
+  subsets: ["latin"],
+  variable: "--font-pt-sans",
+  weight: ["400", "700"],
+});
+
 
 export const metadata: Metadata = {
   title: "Avis Explorer",
@@ -17,19 +32,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-body antialiased">
+      <body
+        className={cn(
+          "font-body antialiased",
+          playfairDisplay.variable,
+          ptSans.variable
+        )}
+      >
         <FirebaseClientProvider>
           <LanguageProvider>
-            <div 
-              className="relative flex min-h-screen w-full flex-col bg-cover bg-center bg-fixed"
-              style={{ backgroundImage: "url('/arara.jpg')" }}
-            >
-              <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-[-1]"></div>
+            <div className="background-container">
+              <div className="background-overlay"></div>
               <Header />
               <main className="flex-1">{children}</main>
             </div>
