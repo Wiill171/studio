@@ -10,64 +10,29 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
     /**
      * @description Secure the user profile document.
      * @path /users/{userId}
-     * @allow (create) - Authenticated user creates their own profile if the userId matches their auth.uid.
-     * @allow (get, update, delete) - Authenticated user can access/modify their own profile if the userId matches their auth.uid.
-     * @deny (create) - An unauthenticated user attempts to create a user profile.
-     * @deny (get, update, delete) - An authenticated user attempts to access/modify another user's profile.
-     * @principle Enforces document ownership for all operations.
+     * @allow (create, get, update, delete) - Authenticated user can manage their own profile.
+     * @deny (list) - No one can list all users.
      */
     match /users/{userId} {
-      // Define helper function
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isOwner(userId) {
-        return request.auth.uid == userId;
-      }
-
-      function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
-      }
-
-      allow get: if isOwner(userId);
+      allow read, write: if isOwner(userId);
       allow list: if false;
-      allow create: if isSignedIn() && isOwner(userId) && request.resource.data.id == userId;
-      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
-      allow delete: if isExistingOwner(userId);
     }
 
     /**
      * @description Secure the bird sighting subcollection under a user's profile.
      * @path /users/{userId}/sightings/{sightingId}
-     * @allow (create) - Authenticated user creates a sighting record under their own profile.
-     * @allow (get, list, update, delete) - Authenticated user can access/modify their own sighting records.
-     * @deny (create) - An unauthenticated user attempts to create a sighting record.
-     * @deny (get, list, update, delete) - An authenticated user attempts to access/modify another user's sighting records.
-     * @principle Enforces document ownership for all operations.
+     * @allow (create, get, list, update, delete) - Authenticated user can manage their own sighting records.
      */
     match /users/{userId}/sightings/{sightingId} {
-      // Define helper function
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isOwner(userId) {
-        return request.auth.uid == userId;
-      }
-
-      function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
-      }
-
-      allow get: if isOwner(userId);
-      allow list: if isOwner(userId);
-      allow create: if isSignedIn() && isOwner(userId);
-      allow update: if isExistingOwner(userId);
-      allow delete: if isExistingOwner(userId);
+      allow read, write: if isOwner(userId);
     }
 
     /**
@@ -75,7 +40,6 @@ service cloud.firestore {
      * @path /birds/{birdId}
      * @allow (get, list) - Any user can read bird species data.
      * @deny (create, update, delete) - No user can create, update, or delete bird species data (admin-only).
-     * @principle Allows public read access while restricting write access.
      */
     match /birds/{birdId} {
       allow get, list: if true;
