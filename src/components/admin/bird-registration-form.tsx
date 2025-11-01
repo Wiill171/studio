@@ -27,6 +27,7 @@ import { useState } from "react";
 import { Loader2, Bird, X } from "lucide-react";
 import { useFirestore } from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Badge } from "@/components/ui/badge";
 
 const formSchema = z.object({
@@ -69,17 +70,6 @@ export function BirdRegistrationForm() {
     form.setValue("globalRange", newRanges);
   }
 
-  const fileToDataUri = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            resolve(reader.result as string);
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-    });
-  };
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     if (!firestore) {
@@ -93,15 +83,18 @@ export function BirdRegistrationForm() {
     }
 
     try {
-        let photoDataUri;
+        let imageUrl = "";
         if (photoFile) {
-          photoDataUri = await fileToDataUri(photoFile);
+            const storage = getStorage();
+            const storageRef = ref(storage, `bird-photos/${Date.now()}_${photoFile.name}`);
+            const snapshot = await uploadBytes(storageRef, photoFile);
+            imageUrl = await getDownloadURL(snapshot.ref);
         }
 
         const birdData = {
             ...values,
             colors: [values.primaryColor],
-            imageUrl: photoDataUri || "",
+            imageUrl: imageUrl,
             createdAt: new Date().toISOString(),
         };
 
