@@ -215,7 +215,7 @@ export function BirdRegistrationForm() {
                         render={({ field }) => (
                         <FormItem>
                             <FormLabel>Habitat</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select onValuechange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                                 <SelectTrigger>
                                 <SelectValue placeholder="Selecione o habitat" />
