@@ -80,7 +80,7 @@ export function BirdRegistrationForm() {
         reader.onerror = reject;
         reader.readAsDataURL(file);
     });
-  }
+  };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
@@ -96,7 +96,9 @@ export function BirdRegistrationForm() {
 
     try {
         let photoDataUri;
-        if (photoFile) photoDataUri = await fileToDataUri(photoFile);
+        if (photoFile) {
+          photoDataUri = await fileToDataUri(photoFile);
+        }
 
         const birdData = {
             ...values,
@@ -190,7 +192,7 @@ export function BirdRegistrationForm() {
                         render={({ field }) => (
                         <FormItem>
                             <FormLabel>Cor Primária</FormLabel>
-                             <Select onValueChange={field.onChange} defaultValue={field.value}>
+                             <Select onValuechange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                     <SelectTrigger>
                                     <SelectValue placeholder="Selecione a cor" />
@@ -215,7 +217,7 @@ export function BirdRegistrationForm() {
                         render={({ field }) => (
                         <FormItem>
                             <FormLabel>Habitat</FormLabel>
-                            <Select onValuechange={field.onChange} defaultValue={field.value}>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                                 <SelectTrigger>
                                 <SelectValue placeholder="Selecione o habitat" />
