@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -53,7 +52,6 @@ export function BirdRegistrationForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [rangeInput, setRangeInput] = useState("");
-
 
   const handleRangeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && rangeInput.trim() !== "") {
@@ -192,11 +190,11 @@ export function BirdRegistrationForm() {
                         render={({ field }) => (
                         <FormItem>
                             <FormLabel>Cor Primária</FormLabel>
-                             <Select onValuechange={field.onChange} defaultValue={field.value}>
+                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                     <SelectTrigger>
                                     <SelectValue placeholder="Selecione a cor" />
-                                    </Trigger>
+                                    </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
                                     <SelectItem value="brown">Marrom</SelectItem>
