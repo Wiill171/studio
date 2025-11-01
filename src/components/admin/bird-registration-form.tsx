@@ -52,8 +52,6 @@ export function BirdRegistrationForm() {
   const firestore = useFirestore();
   const [isLoading, setIsLoading] = useState(false);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [songFile, setSongFile] = useState<File | null>(null);
-  const [videoFile, setVideoFile] = useState<File | null>(null);
   const [rangeInput, setRangeInput] = useState("");
 
 
@@ -97,17 +95,13 @@ export function BirdRegistrationForm() {
     }
 
     try {
-        let photoDataUri, songDataUri, videoDataUri;
+        let photoDataUri;
         if (photoFile) photoDataUri = await fileToDataUri(photoFile);
-        if (songFile) songDataUri = await fileToDataUri(songFile);
-        if (videoFile) videoDataUri = await fileToDataUri(videoFile);
 
         const birdData = {
             ...values,
             colors: [values.primaryColor],
             imageUrl: photoDataUri || "",
-            songUrl: songDataUri || "",
-            videoUrl: videoDataUri || "",
             createdAt: new Date().toISOString(),
         };
 
@@ -120,8 +114,6 @@ export function BirdRegistrationForm() {
         });
         form.reset();
         setPhotoFile(null);
-        setSongFile(null);
-        setVideoFile(null);
         form.setValue("globalRange", []);
     } catch (error: any) {
       console.error("Firebase error:", error);
@@ -202,7 +194,7 @@ export function BirdRegistrationForm() {
                                 <FormControl>
                                     <SelectTrigger>
                                     <SelectValue placeholder="Selecione a cor" />
-                                    </SelectTrigger>
+                                    </Trigger>
                                 </FormControl>
                                 <SelectContent>
                                     <SelectItem value="brown">Marrom</SelectItem>
@@ -274,20 +266,6 @@ export function BirdRegistrationForm() {
                     <FormLabel>Foto</FormLabel>
                     <FormControl>
                         <Input type="file" accept="image/*" onChange={(e) => setPhotoFile(e.target.files?.[0] || null)} />
-                    </FormControl>
-                </FormItem>
-
-                 <FormItem>
-                    <FormLabel>Canto (Áudio)</FormLabel>
-                    <FormControl>
-                        <Input type="file" accept="audio/*" onChange={(e) => setSongFile(e.target.files?.[0] || null)} />
-                    </FormControl>
-                </FormItem>
-
-                 <FormItem>
-                    <FormLabel>Vídeo</FormLabel>
-                    <FormControl>
-                        <Input type="file" accept="video/*" onChange={(e) => setVideoFile(e.target.files?.[0] || null)} />
                     </FormControl>
                 </FormItem>
 
