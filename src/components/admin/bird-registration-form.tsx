@@ -61,7 +61,8 @@ export function BirdRegistrationForm() {
   const handleRangeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && rangeInput.trim() !== "") {
       e.preventDefault();
-      const newRanges = [...form.getValues("globalRange"), rangeInput.trim()];
+      const currentRanges = form.getValues("globalRange") || [];
+      const newRanges = [...currentRanges, rangeInput.trim()];
       form.setValue("globalRange", newRanges);
       setRangeInput("");
     }
@@ -246,25 +247,23 @@ export function BirdRegistrationForm() {
                     <FormItem>
                       <FormLabel>Área de Abrangência Global</FormLabel>
                       <FormControl>
-                        <>
-                          <Input
+                        <Input
                             placeholder="Ex: América do Sul, Europa. Pressione Enter para adicionar."
                             value={rangeInput}
                             onChange={(e) => setRangeInput(e.target.value)}
                             onKeyDown={handleRangeKeyDown}
-                          />
-                          <div className="flex flex-wrap gap-2 mt-2">
-                            {field.value.map((range, index) => (
-                              <Badge key={index} variant="secondary">
-                                {range}
-                                <button type="button" onClick={() => removeRange(index)} className="ml-2">
-                                  <X className="h-3 w-3"/>
-                                </button>
-                              </Badge>
-                            ))}
-                          </div>
-                        </>
+                        />
                       </FormControl>
+                       <div className="flex flex-wrap gap-2 mt-2">
+                        {(field.value || []).map((range, index) => (
+                          <Badge key={index} variant="secondary">
+                            {range}
+                            <button type="button" onClick={() => removeRange(index)} className="ml-2">
+                              <X className="h-3 w-3"/>
+                            </button>
+                          </Badge>
+                        ))}
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
