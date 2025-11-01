@@ -12,6 +12,7 @@ import {
   Languages,
   LogOut,
   History,
+  BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -96,6 +97,13 @@ export function Header() {
           >
             <Bird className="h-5 w-5" />
             <span>{t("identify")}</span>
+          </Link>
+           <Link
+            href="/birds"
+            className="flex items-center gap-2 transition-colors hover:text-foreground/80 text-foreground/60"
+          >
+            <BookOpen className="h-5 w-5" />
+            <span>{t("birds")}</span>
           </Link>
         </nav>
         <div className="flex-1" />

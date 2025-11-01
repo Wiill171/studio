@@ -84,5 +84,10 @@
   "identifyBirdByVideoDescription": "Envie um vídeo curto de um pássaro. Nossa IA analisará as imagens para identificar a espécie.",
   "uploadVideo": "Carregar Vídeo",
   "noVideoSelectedToastTitle": "Nenhum vídeo selecionado",
-  "noVideoSelectedToastDescription": "Por favor, escolha um vídeo para identificar."
+  "noVideoSelectedToastDescription": "Por favor, escolha um vídeo para identificar.",
+  "birds": "Pássaros",
+  "registeredBirds": "Pássaros Cadastrados",
+  "registeredBirdsDescription": "Explore a galeria de todos os pássaros cadastrados no banco de dados.",
+  "noBirdsFound": "Nenhum Pássaro Encontrado",
+  "noBirdsFoundDescription": "Ainda não há pássaros cadastrados no banco de dados. Seja o primeiro a adicionar um!"
 }

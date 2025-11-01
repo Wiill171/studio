@@ -83,5 +83,10 @@
   "identifyBirdByVideoDescription": "Upload a short video of a bird. Our AI will analyze the footage to identify the species.",
   "uploadVideo": "Upload Video",
   "noVideoSelectedToastTitle": "No video selected",
-  "noVideoSelectedToastDescription": "Please choose a video to identify."
+  "noVideoSelectedToastDescription": "Please choose a video to identify.",
+  "birds": "Birds",
+  "registeredBirds": "Registered Birds",
+  "registeredBirdsDescription": "Explore the gallery of all birds registered in the database.",
+  "noBirdsFound": "No Birds Found",
+  "noBirdsFoundDescription": "There are no birds registered in the database yet. Be the first to add one!"
 }
