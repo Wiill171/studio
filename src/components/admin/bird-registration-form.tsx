@@ -26,9 +26,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { Loader2, Upload, X } from "lucide-react";
-import { addDocumentNonBlocking } from "@/firebase/non-blocking-updates";
 import { useFirestore } from "@/firebase";
-import { collection } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { Badge } from "@/components/ui/badge";
 
 const formSchema = z.object({
@@ -113,7 +112,7 @@ export function BirdRegistrationForm() {
         };
 
         const birdsCollection = collection(firestore, "birds");
-        await addDocumentNonBlocking(birdsCollection, birdData);
+        await addDoc(birdsCollection, birdData);
 
         toast({
             title: "Pássaro Cadastrado",
@@ -123,7 +122,9 @@ export function BirdRegistrationForm() {
         setPhotoFile(null);
         setSongFile(null);
         setVideoFile(null);
+        form.setValue("globalRange", []);
     } catch (error: any) {
+      console.error("Firebase error:", error);
       toast({
         variant: "destructive",
         title: "Falha no Cadastro",
@@ -255,7 +256,7 @@ export function BirdRegistrationForm() {
                         />
                       </FormControl>
                        <div className="flex flex-wrap gap-2 mt-2">
-                        {(field.value || []).map((range, index) => (
+                        {field.value.map((range, index) => (
                           <Badge key={index} variant="secondary">
                             {range}
                             <button type="button" onClick={() => removeRange(index)} className="ml-2">
