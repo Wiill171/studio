@@ -27,23 +27,23 @@ service cloud.firestore {
     }
 
     /**
-     * @description Secure the bird sighting subcollection under a user's profile.
-     * @path /users/{userId}/sightings/{sightingId}
-     * @allow (create, get, list, update, delete) - Authenticated user can manage their own sighting records.
-     */
+* @description Secure the bird sighting subcollection under a user's profile.
+* @path /users/{userId}/sightings/{sightingId}
+* @allow (create, get, list, update, delete) - Authenticated user can manage their own sighting records.
+*/
     match /users/{userId}/sightings/{sightingId} {
       allow read, write: if isOwner(userId);
     }
 
     /**
-     * @description Allow public read access to bird species data.
+     * @description Allow authenticated users to read and add bird species data.
      * @path /birds/{birdId}
-     * @allow (get, list) - Any user can read bird species data.
-     * @deny (create, update, delete) - No user can create, update, or delete bird species data (admin-only).
+     * @allow (get, list, create) - Any authenticated user can read and create bird species data.
+     * @deny (update, delete) - No user can update or delete bird species data (admin-only).
      */
     match /birds/{birdId} {
-      allow get, list: if true;
-      allow create, update, delete: if false;
+      allow get, list, create: if request.auth != null;
+      allow update, delete: if false;
     }
   }
 }
