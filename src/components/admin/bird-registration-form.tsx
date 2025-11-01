@@ -168,7 +168,7 @@ export function BirdRegistrationForm() {
                         render={({ field }) => (
                         <FormItem>
                             <FormLabel>Tamanho</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select onValuechange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                                 <SelectTrigger>
                                 <SelectValue placeholder="Selecione o tamanho" />
@@ -190,7 +190,7 @@ export function BirdRegistrationForm() {
                         render={({ field }) => (
                         <FormItem>
                             <FormLabel>Cor Primária</FormLabel>
-                             <Select onValueChange={field.onChange} defaultValue={field.value}>
+                             <Select onValuechange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                     <SelectTrigger>
                                     <SelectValue placeholder="Selecione a cor" />
@@ -215,7 +215,7 @@ export function BirdRegistrationForm() {
                         render={({ field }) => (
                         <FormItem>
                             <FormLabel>Habitat</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <Select onValuechange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                                 <SelectTrigger>
                                 <SelectValue placeholder="Selecione o habitat" />

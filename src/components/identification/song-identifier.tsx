@@ -42,22 +42,6 @@ export function SongIdentifier() {
     };
   }, []);
 
-  const saveIdentification = async (identificationResult: IdentifyBirdFromSongOutput, audioUrl: string) => {
-    if (!user || !firestore) return;
-    const randomImageUrl = placeHolderImages.placeholderImages.find(p => p.id === "bird-song-generic")?.imageUrl || "https://picsum.photos/seed/birdsong/600/400";
-    
-    const historyCollection = collection(firestore, `users/${user.uid}/sightings`);
-    const identificationData = {
-        species: identificationResult.species,
-        date: new Date().toISOString(),
-        imageUrl: randomImageUrl, // Storing a placeholder image URL for song
-        method: "song",
-        confidence: identificationResult.confidence,
-        alternativeSpecies: identificationResult.alternativeSpecies,
-    };
-    await addDocumentNonBlocking(historyCollection, identificationData);
-  };
-
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -151,7 +135,7 @@ export function SongIdentifier() {
     try {
       const result = await identifyBirdFromSong({ audioDataUri: dataUriToSubmit });
       setResult(result);
-      await saveIdentification(result, dataUriToSubmit);
+      // Not saving to history to avoid oversized document error.
     } catch (error) {
       console.error("Error identifying bird from song:", error);
       toast({

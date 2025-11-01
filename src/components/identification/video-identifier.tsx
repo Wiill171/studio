@@ -41,21 +41,6 @@ export function VideoIdentifier() {
     };
   }, []);
 
-  const saveIdentification = async (identificationResult: IdentifyBirdFromVideoOutput, videoUrl: string) => {
-    if (!user || !firestore) return;
-    const historyCollection = collection(firestore, `users/${user.uid}/sightings`);
-    const identificationData = {
-        species: identificationResult.species,
-        date: new Date().toISOString(),
-        videoUrl: videoUrl,
-        method: "video",
-        confidence: identificationResult.confidence,
-        description: identificationResult.description,
-    };
-    await addDocumentNonBlocking(historyCollection, identificationData);
-  };
-
-
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -158,7 +143,7 @@ export function VideoIdentifier() {
     try {
       const result = await identifyBirdFromVideo({ videoDataUri: dataUriToSubmit });
       setResult(result);
-      await saveIdentification(result, videoPreview!);
+      // Not saving to history to avoid oversized document error.
     } catch (error) {
       console.error("Error identifying bird from video:", error);
       toast({
