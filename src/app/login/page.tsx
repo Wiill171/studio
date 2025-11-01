@@ -18,3 +18,9 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <LoginForm />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

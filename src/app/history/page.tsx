@@ -12,7 +12,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { useTranslation } from "@/hooks/use-translation";
-import { useMemo } from "react";
+import { useMemoFirebase } from "@/firebase";
 import Image from 'next/image';
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -34,7 +34,7 @@ export default function HistoryPage() {
   const firestore = useFirestore();
   const { t } = useTranslation();
 
-  const historyCollection = useMemo(() => {
+  const historyCollection = useMemoFirebase(() => {
     if (!user || !firestore) return null;
     return collection(firestore, `users/${user.uid}/sightings`);
   }, [user, firestore]);
