@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ResultCard } from "@/components/identification/result-card";
-import { Loader2, Video, Camera, Zap, X, Pause, PlusSquare } from "lucide-react";
+import { Loader2, Camera, Sparkles, X, Pause, PlusSquare } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useUser, useFirestore } from "@/firebase";
@@ -224,7 +224,7 @@ export function VideoIdentifier() {
                         </>
                     ) : (
                         <>
-                        <Zap className="mr-2 h-4 w-4" />
+                        <Sparkles className="mr-2 h-4 w-4" />
                         {t("identifyBird")}
                         </>
                     )}

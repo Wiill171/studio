@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { Loader2, Upload, X } from "lucide-react";
+import { Loader2, Bird, X } from "lucide-react";
 import { useFirestore } from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { Badge } from "@/components/ui/badge";
@@ -277,7 +277,7 @@ export function BirdRegistrationForm() {
                     </>
                 ) : (
                     <>
-                    <Upload className="mr-2 h-4 w-4" />
+                    <Bird className="mr-2 h-4 w-4" />
                     Cadastrar Pássaro
                     </>
                 )}

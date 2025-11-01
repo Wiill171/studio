@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
-import { Search, PlusSquare, Loader2 } from "lucide-react";
+import { Sparkles, PlusSquare, Loader2 } from "lucide-react";
 import { useTranslation } from "@/hooks/use-translation";
 import Link from "next/link";
 import { Textarea } from "../ui/textarea";
@@ -94,7 +94,7 @@ export function ManualIdentifier() {
                     </>
                     ) : (
                     <>
-                        <Search className="mr-2 h-4 w-4" /> {t("search")}
+                        <Sparkles className="mr-2 h-4 w-4" /> {t("search")}
                     </>
                 )}
               </Button>
