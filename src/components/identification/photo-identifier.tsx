@@ -97,11 +97,12 @@ export function PhotoIdentifier() {
   const saveIdentification = async (identificationResult: IdentifyBirdFromPhotoOutput, imageUrl: string) => {
     if (!user || !firestore) return;
 
+    // We only save the imageUrl to avoid storing large base64 strings in Firestore
     const historyCollection = collection(firestore, `users/${user.uid}/sightings`);
     const identificationData = {
       species: identificationResult.species,
       date: new Date().toISOString(),
-      imageUrl: imageUrl,
+      imageUrl: imageUrl, // Storing the preview URL
       method: "photo",
       confidence: identificationResult.confidence,
       description: identificationResult.description,

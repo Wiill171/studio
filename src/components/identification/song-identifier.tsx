@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ResultCard } from "@/components/identification/result-card";
-import { Loader2, Music4, Mic, X, Waves, Pause, PlusSquare } from "lucide-react";
+import { Loader2, Music4, Mic, X, Waves, Pause, PlusSquare, Sparkles } from "lucide-react";
 import placeHolderImages from "@/lib/placeholder-images.json";
 import { useTranslation } from "@/hooks/use-translation";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -216,7 +216,7 @@ export function SongIdentifier() {
                 </>
               ) : (
                 <>
-                  <Music4 className="mr-2 h-4 w-4" />
+                  <Sparkles className="mr-2 h-4 w-4" />
                   {t("identifySong")}
                 </>
               )}
