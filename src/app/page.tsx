@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Camera, Mic, Search, Feather, Bird, Video } from "lucide-react";
+import { Camera, Mic, Search, Feather, Bird, Video, PlusSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/firebase";
 import { LoginForm } from "@/components/auth/login-form";
@@ -58,6 +58,11 @@ function HomePageContent() {
                 <Button asChild size="lg">
                   <Link href="/identify">
                     <Bird className="mr-2 h-5 w-5" /> Comece a Identificar
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link href="/register-bird">
+                    <PlusSquare className="mr-2 h-5 w-5" /> Cadastrar Pássaro
                   </Link>
                 </Button>
               </div>
