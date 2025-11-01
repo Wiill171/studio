@@ -38,11 +38,11 @@ service cloud.firestore {
     /**
      * @description Allow authenticated users to read and add bird species data.
      * @path /birds/{birdId}
-     * @allow (get, list, create) - Any authenticated user can read and create bird species data.
+     * @allow (get, list, create, write) - Any authenticated user can read and create/write bird species data.
      * @deny (update, delete) - No user can update or delete bird species data (admin-only).
      */
     match /birds/{birdId} {
-      allow get, list, create: if request.auth != null;
+      allow get, list, write: if request.auth != null;
       allow update, delete: if false;
     }
   }
