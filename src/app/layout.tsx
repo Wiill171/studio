@@ -5,6 +5,7 @@ import { LanguageProvider } from "@/context/language-context";
 import { FirebaseClientProvider } from "@/firebase/client-provider";
 import { Playfair_Display, PT_Sans } from "next/font/google";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import "./globals.css";
 
 const playfairDisplay = Playfair_Display({
@@ -22,7 +23,7 @@ const ptSans = PT_Sans({
 
 export const metadata: Metadata = {
   title: "Avis Explorer",
-  description: "Identify birds by photo, song, or description.",
+  description: "Identifique pássaros por foto, canto ou descrição com a ajuda da IA. Explore o mundo das aves e registre suas descobertas.",
 };
 
 export default function RootLayout({
@@ -42,6 +43,13 @@ export default function RootLayout({
         <FirebaseClientProvider>
           <LanguageProvider>
             <div className="background-container">
+              <Image 
+                src="/arara.jpg" 
+                alt="Plano de fundo com uma arara vermelha" 
+                fill 
+                className="object-cover -z-10"
+                priority
+              />
               <div className="background-overlay"></div>
               <Header />
               <main className="flex-1">{children}</main>
