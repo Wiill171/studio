@@ -1,6 +1,6 @@
 "use client";
 
-import { useCollection, useFirestore } from "@/firebase";
+import { useCollection, useFirestore, useMemoFirebase } from "@/firebase";
 import { collection } from "firebase/firestore";
 import {
   Card,
@@ -10,11 +10,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useTranslation } from "@/hooks/use-translation";
-import { useMemo } from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Bird, Loader2 } from "lucide-react";
+import { Bird } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface Bird {
@@ -46,7 +45,7 @@ export default function BirdsPage() {
   const firestore = useFirestore();
   const { t } = useTranslation();
 
-  const birdsCollection = useMemo(() => {
+  const birdsCollection = useMemoFirebase(() => {
     if (!firestore) return null;
     return collection(firestore, "birds");
   }, [firestore]);
