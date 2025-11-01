@@ -137,7 +137,7 @@ export function SongIdentifier() {
       setResult(result);
       // Not saving to history to avoid oversized document error.
     } catch (error) {
-      console.error("Error identifying bird from song:", error);
+      console.error("Firebase error:", error);
       toast({
         title: t("identificationFailedToastTitle"),
         description: t("identificationFailedSongToastDescription"),
