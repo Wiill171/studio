@@ -10,7 +10,8 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { birds, Bird } from '@/lib/birds';
+import { initializeFirebase } from '@/firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 const IdentifyBirdFromDescriptionInputSchema = z.object({
   description: z.string().describe('A textual description of the bird.'),
@@ -45,7 +46,7 @@ export async function identifyBirdFromDescription(
 
 const prompt = ai.definePrompt({
     name: 'identifyBirdFromDescriptionPrompt',
-    input: { schema: IdentifyBirdFromDescriptionInputSchema },
+    input: { schema: IdentifyBirdFromDescriptionInputSchema.extend({ birds: z.any() }) },
     output: { schema: IdentifyBirdFromDescriptionOutputSchema },
     prompt: `Você é um ornitólogo especialista. Sua tarefa é identificar espécies de pássaros a partir de uma descrição textual fornecida por um usuário.
 
@@ -73,6 +74,11 @@ const identifyBirdFromDescriptionFlow = ai.defineFlow(
     outputSchema: IdentifyBirdFromDescriptionOutputSchema,
   },
   async (input) => {
+    const { firestore } = initializeFirebase();
+    const birdsCollection = collection(firestore, "birds");
+    const birdsSnapshot = await getDocs(birdsCollection);
+    const birds = birdsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
     const { output } = await prompt({
         ...input,
         birds,
