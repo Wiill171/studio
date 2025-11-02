@@ -39,6 +39,28 @@ function FeatureCard({
 }
 
 function HomePageContent() {
+  const { user } = useUser();
+
+  if (!user) {
+    return (
+      <div className="container flex h-full min-h-[calc(100vh-4rem)] items-center justify-center py-12">
+        <Card className="w-full max-w-md shadow-lg">
+          <CardHeader className="text-center">
+            <CardTitle className="font-headline text-3xl">
+              Bem-vindo de volta
+            </CardTitle>
+            <CardDescription>
+              Entre com suas credenciais para acessar sua conta.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <LoginForm />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center">
       <section className="w-full py-20 md:py-32 lg:py-40 bg-primary/10">
@@ -118,35 +140,5 @@ function HomePageContent() {
 }
 
 export default function Home() {
-  const { user, isUserLoading } = useUser();
-
-  if (isUserLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p>Carregando...</p>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="container flex h-full min-h-[calc(100vh-4rem)] items-center justify-center py-12">
-        <Card className="w-full max-w-md shadow-lg">
-          <CardHeader className="text-center">
-            <CardTitle className="font-headline text-3xl">
-              Bem-vindo de volta
-            </CardTitle>
-            <CardDescription>
-              Entre com suas credenciais para acessar sua conta.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <LoginForm />
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
   return <HomePageContent />;
 }
