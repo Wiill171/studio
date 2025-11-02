@@ -56,7 +56,7 @@ const prompt = ai.definePrompt({
 
     Pássaros Conhecidos:
     {{#each birds}}
-    - {{this.name}}: (Tamanho: {{this.size}}, Habitat: {{this.habitat}}, Cores: {{#each this.colors}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}})
+    - {{this.name}}
     {{/each}}
 
     Descrição do usuário:

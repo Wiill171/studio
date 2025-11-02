@@ -15,13 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { Loader2, Bird, X } from "lucide-react";
@@ -34,9 +27,6 @@ import { Label } from "../ui/label";
 const formSchema = z.object({
   name: z.string().min(2, { message: "O nome deve ter pelo menos 2 caracteres." }),
   description: z.string().min(10, { message: "A descrição deve ter pelo menos 10 caracteres." }),
-  size: z.enum(["small", "medium", "large"]),
-  habitat: z.enum(["forest", "wetland", "grassland", "urban"]),
-  primaryColor: z.string().min(1, { message: "A cor primária é obrigatória." }),
   globalRange: z.array(z.string()).min(1, { message: "Pelo menos uma região é obrigatória."}),
 });
 
@@ -92,11 +82,8 @@ export function BirdRegistrationForm() {
             imageUrl = await getDownloadURL(snapshot.ref);
         }
 
-        const { primaryColor, ...restOfValues } = values;
-
         const birdData = {
-            ...restOfValues,
-            colors: [primaryColor],
+            ...values,
             imageUrl: imageUrl,
             createdAt: new Date().toISOString(),
         };
@@ -157,78 +144,7 @@ export function BirdRegistrationForm() {
                     </FormItem>
                 )}
                 />
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <FormField
-                        control={form.control}
-                        name="size"
-                        render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Tamanho</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                                <SelectTrigger>
-                                <SelectValue placeholder="Selecione o tamanho" />
-                                </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                                <SelectItem value="small">Pequeno</SelectItem>
-                                <SelectItem value="medium">Médio</SelectItem>
-                                <SelectItem value="large">Grande</SelectItem>
-                            </SelectContent>
-                            </Select>
-                            <FormMessage />
-                        </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="primaryColor"
-                        render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Cor Primária</FormLabel>
-                             <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                    <SelectTrigger>
-                                    <SelectValue placeholder="Selecione a cor" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    <SelectItem value="brown">Marrom</SelectItem>
-                                    <SelectItem value="red">Vermelho</SelectItem>
-                                    <SelectItem value="blue">Azul</SelectItem>
-                                    <SelectItem value="yellow">Amarelo</SelectItem>
-                                    <SelectItem value="black">Preto</SelectItem>
-                                    <SelectItem value="white">Branco</SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <FormMessage />
-                        </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="habitat"
-                        render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Habitat</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                                <SelectTrigger>
-                                <SelectValue placeholder="Selecione o habitat" />
-                                </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                                <SelectItem value="forest">Floresta</SelectItem>
-                                <SelectItem value="wetland">Área Úmida</SelectItem>
-                                <SelectItem value="grassland">Campo</SelectItem>
-                                <SelectItem value="urban">Urbano</SelectItem>
-                            </SelectContent>
-                            </Select>
-                             <FormMessage />
-                        </FormItem>
-                        )}
-                    />
-                </div>
+                
                  <FormField
                   control={form.control}
                   name="globalRange"

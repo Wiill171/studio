@@ -99,15 +99,12 @@
       "properties": {
         "name": { "type": "string", "description": "The common name of the bird." },
         "description": { "type": "string", "description": "A detailed description of the bird." },
-        "size": { "type": "string", "enum": ["small", "medium", "large"] },
-        "habitat": { "type": "string", "enum": ["forest", "wetland", "grassland", "urban"] },
-        "colors": { "type": "array", "items": { "type": "string" } },
         "imageUrl": { "type": "string", "format": "uri", "description": "URL to a photo of the bird." },
         "songUrl": { "type": "string", "format": "uri", "description": "URL to an audio recording of the bird's song." },
         "videoUrl": { "type": "string", "format": "uri", "description": "URL to a video of the bird." },
         "globalRange": { "type": "array", "items": { "type": "string" }, "description": "Geographical regions where the bird is found." }
       },
-      "required": ["name", "description", "size", "habitat", "colors", "globalRange"]
+      "required": ["name", "description", "globalRange"]
     }
   },
   "auth": {

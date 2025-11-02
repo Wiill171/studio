@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/card";
 import { useTranslation } from "@/hooks/use-translation";
 import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Bird } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -21,9 +20,6 @@ interface Bird {
   name: string;
   description: string;
   imageUrl?: string;
-  size: string;
-  habitat: string;
-  colors: string[];
 }
 
 function BirdCardSkeleton() {
@@ -98,11 +94,6 @@ export default function BirdsPage() {
                   <p className="text-sm text-muted-foreground line-clamp-3">
                     {bird.description}
                   </p>
-                  <div className="flex flex-wrap gap-2 mt-4 text-xs">
-                     <Badge variant="secondary">{t(bird.size as any)}</Badge>
-                     <Badge variant="secondary">{t(bird.habitat as any)}</Badge>
-                     {bird.colors?.map(color => <Badge key={color} variant="outline">{t(color as any)}</Badge>)}
-                  </div>
                 </CardContent>
               </Card>
             ))}

@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import {
   Feather,
   User,
   LogIn,
-  MapPin,
   Loader2,
   Bird,
   Languages,
@@ -31,39 +30,6 @@ import { useUser, useAuth } from "@/firebase";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
-function GeolocationInfo() {
-  const [location, setLocation] = useState<string | null>(null);
-  const { t } = useTranslation();
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      setLocation(t("detectingLocation"));
-      navigator.geolocation.getCurrentPosition(
-        () => {
-          setLocation(t("locationDetected"));
-        },
-        () => {
-          setLocation(t("locationAccessDenied"));
-        }
-      );
-    }
-  }, [t]);
-
-  if (location === null) {
-    return null;
-  }
-
-  return (
-    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-      {location === t("detectingLocation") ? (
-        <Loader2 className="h-4 w-4 animate-spin" />
-      ) : (
-        <MapPin className="h-4 w-4 text-accent" />
-      )}
-      <span>{location}</span>
-    </div>
-  );
-}
 
 export function Header() {
   const { language, setLanguage } = useLanguage();
@@ -108,9 +74,6 @@ export function Header() {
         </nav>
         <div className="flex-1" />
         <div className="flex items-center gap-4">
-          <div className="hidden md:block">
-            <GeolocationInfo />
-          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
