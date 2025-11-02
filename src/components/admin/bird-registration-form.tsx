@@ -92,9 +92,11 @@ export function BirdRegistrationForm() {
             imageUrl = await getDownloadURL(snapshot.ref);
         }
 
+        const { primaryColor, ...restOfValues } = values;
+
         const birdData = {
-            ...values,
-            colors: [values.primaryColor],
+            ...restOfValues,
+            colors: [primaryColor],
             imageUrl: imageUrl,
             createdAt: new Date().toISOString(),
         };
