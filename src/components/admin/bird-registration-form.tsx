@@ -25,9 +25,9 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { Loader2, Bird, X } from "lucide-react";
-import { useFirestore } from "@/firebase";
+import { useFirestore, useStorage } from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "../ui/label";
 
@@ -51,6 +51,7 @@ export function BirdRegistrationForm() {
   });
   const { toast } = useToast();
   const firestore = useFirestore();
+  const storage = useStorage();
   const [isLoading, setIsLoading] = useState(false);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [rangeInput, setRangeInput] = useState("");
@@ -73,11 +74,11 @@ export function BirdRegistrationForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    if (!firestore) {
+    if (!firestore || !storage) {
       toast({
         variant: "destructive",
         title: "Erro",
-        description: "Firestore não está disponível.",
+        description: "Serviços Firebase não estão disponíveis.",
       });
       setIsLoading(false);
       return;
@@ -86,7 +87,6 @@ export function BirdRegistrationForm() {
     try {
         let imageUrl = "";
         if (photoFile) {
-            const storage = getStorage();
             const storageRef = ref(storage, `bird-photos/${Date.now()}_${photoFile.name}`);
             const snapshot = await uploadBytes(storageRef, photoFile);
             imageUrl = await getDownloadURL(snapshot.ref);
