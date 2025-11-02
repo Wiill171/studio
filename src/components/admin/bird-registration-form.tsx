@@ -29,6 +29,7 @@ import { useFirestore } from "@/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "../ui/label";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "O nome deve ter pelo menos 2 caracteres." }),
@@ -255,12 +256,17 @@ export function BirdRegistrationForm() {
                   )}
                 />
 
-                 <FormItem>
-                    <FormLabel>Foto</FormLabel>
-                    <FormControl>
-                        <Input type="file" accept="image/*" onChange={(e) => setPhotoFile(e.target.files?.[0] || null)} />
-                    </FormControl>
-                </FormItem>
+                 <div className="space-y-2">
+                    <Label htmlFor="photo-upload">Foto</Label>
+                    <div className="flex items-center gap-4">
+                        <Label htmlFor="photo-upload" className="flex-none cursor-pointer rounded-md border border-input bg-background px-4 py-2 text-sm text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground">
+                            Escolher arquivo
+                        </Label>
+                        <Input id="photo-upload" type="file" accept="image/*" className="hidden" onChange={(e) => setPhotoFile(e.target.files?.[0] || null)} />
+                        <span className="text-sm text-muted-foreground">{photoFile?.name || "Nenhum arquivo escolhido"}</span>
+                    </div>
+                 </div>
+
 
                 <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? (
