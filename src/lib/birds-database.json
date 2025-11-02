@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "name": "Jacutinga",
+    "description": "É monotípica e frequentemente incluída no gênero Pipile. No passado, já foi considerada conspecífica com a jacutinga-de-garganta-azul (Aburria cumanensis). É uma das espécies ameaçadas de tornar-se extintas em pouco tempo, caso o pouco que resta da Mata Atlântica não seja efetivamente protegido. Sua população foi drasticamente reduzida. Desapareceu na maioria dos lugares onde era comum e abundante, inclusive nos vales dos grandes rios do Sul e Sudeste brasileiro, onde era encontrada em qualquer mata. Relatos antigos indicam a caça de aproximadamente 50 mil jacutingas no vale do rio Itajaí, no estado de Santa Catarina, em apenas algumas semanas durante o inverno de 1866. Há também fotografias antigas, da década de 30, mostrando caçadores ao lado de “pirâmides” de jacutingas mortas.",
+    "globalRange": [
+      "Floresta Amazõnica, Mata Atlântica e Sul do Brasil"
+    ],
+    "imageUrl": "https://picsum.photos/seed/jacutinga/600",
+    "id": "2025-11-02T19:55:18.993Z"
+  }
+]
