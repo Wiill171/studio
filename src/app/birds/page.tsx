@@ -10,7 +10,7 @@ import {
 import { useTranslation } from "@/hooks/use-translation";
 import Image from "next/image";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Bird, Trash2 } from "lucide-react";
+import { Bird, Trash2, Map, BookOpen } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -24,13 +24,16 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-  } from "@/components/ui/alert-dialog"
+  } from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
 
 interface BirdData {
   id: string;
   name: string;
   description: string;
   imageUrl?: string;
+  globalRange: string[];
 }
 
 function BirdCardSkeleton() {
@@ -54,6 +57,8 @@ export default function BirdsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
+  const [selectedBird, setSelectedBird] = useState<BirdData | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchBirds() {
@@ -104,6 +109,11 @@ export default function BirdsPage() {
     }
   }
 
+  const handleCardClick = (bird: BirdData) => {
+    setSelectedBird(bird);
+    setIsModalOpen(true);
+  }
+
   return (
     <div className="container py-12">
       <div className="mx-auto max-w-6xl">
@@ -140,50 +150,91 @@ export default function BirdsPage() {
           </div>
         )}
         {!isLoading && !error && birds.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {birds.map((bird) => (
-              <Card key={bird.id} className="group flex flex-col overflow-hidden transition-transform hover:scale-105 duration-300">
-                <div className="relative w-full aspect-square bg-muted">
-                  <Image
-                    src={bird.imageUrl || "https://picsum.photos/seed/bird/600"}
-                    alt={bird.name}
-                    fill
-                    className="object-cover"
-                  />
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                        <Button variant="destructive" size="icon" className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Trash2 className="h-4 w-4" />
-                        </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                        <AlertDialogHeader>
-                        <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                            Esta ação não pode ser desfeita. Isso excluirá permanentemente o pássaro
-                            do banco de dados.
-                        </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => handleDelete(bird.id)}>
-                            Excluir
-                        </AlertDialogAction>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                    </AlertDialog>
+            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {birds.map((bird) => (
+                    <Card key={bird.id} className="group flex flex-col overflow-hidden transition-transform hover:scale-105 duration-300">
+                        <DialogTrigger asChild>
+                            <div className="relative w-full aspect-square bg-muted cursor-pointer" onClick={() => handleCardClick(bird)}>
+                                <Image
+                                    src={bird.imageUrl || "https://picsum.photos/seed/bird/600"}
+                                    alt={bird.name}
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                        </DialogTrigger>
+                        <div className="flex-1 flex flex-col justify-between">
+                            <CardHeader>
+                                <CardTitle className="text-xl font-bold">{bird.name}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                            <p className="text-sm text-muted-foreground line-clamp-3">
+                                {bird.description}
+                            </p>
+                            </CardContent>
+                             <div className="p-4 pt-0">
+                                <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <Button variant="destructive" size="sm" className="w-full opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <Trash2 className="h-4 w-4 mr-2" />
+                                        Excluir
+                                    </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                    <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        Esta ação não pode ser desfeita. Isso excluirá permanentemente o pássaro
+                                        do banco de dados.
+                                    </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                    <AlertDialogAction onClick={() => handleDelete(bird.id)}>
+                                        Excluir
+                                    </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                                </AlertDialog>
+                            </div>
+                        </div>
+                    </Card>
+                    ))}
                 </div>
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold">{bird.name}</CardTitle>
-                </CardHeader>
-                <CardContent className="flex-1">
-                  <p className="text-sm text-muted-foreground line-clamp-3">
-                    {bird.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                 {selectedBird && (
+                    <DialogContent className="sm:max-w-[600px]">
+                        <DialogHeader>
+                            <DialogTitle className="font-headline text-3xl text-primary">{selectedBird.name}</DialogTitle>
+                            <DialogDescription>Ficha Técnica da Ave</DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                            <div className="relative w-full aspect-video rounded-md overflow-hidden bg-muted">
+                                 <Image
+                                    src={selectedBird.imageUrl || "https://picsum.photos/seed/bird/600"}
+                                    alt={selectedBird.name}
+                                    fill
+                                    className="object-cover"
+                                />
+                            </div>
+                            <div className="space-y-4">
+                                <div>
+                                    <h3 className="font-semibold flex items-center gap-2"><BookOpen className="h-4 w-4"/> Descrição</h3>
+                                    <p className="text-sm text-muted-foreground mt-1">{selectedBird.description}</p>
+                                </div>
+                                <div>
+                                    <h3 className="font-semibold flex items-center gap-2"><Map className="h-4 w-4"/> Abrangência Global</h3>
+                                    <div className="flex flex-wrap gap-2 mt-2">
+                                        {selectedBird.globalRange.map((range, index) => (
+                                            <Badge key={index} variant="secondary">{range}</Badge>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </DialogContent>
+                )}
+            </Dialog>
         )}
       </div>
     </div>
