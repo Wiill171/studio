@@ -62,3 +62,31 @@ export async function POST(request: Request) {
         return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
     }
 }
+
+// DELETE /api/birds - Deletes a bird
+export async function DELETE(request: Request) {
+    try {
+        const { id } = await request.json();
+
+        if (!id) {
+            return NextResponse.json({ message: 'Bird ID is required' }, { status: 400 });
+        }
+
+        const birds = await readDB();
+        const initialLength = birds.length;
+
+        const updatedBirds = birds.filter((bird: any) => bird.id !== id);
+
+        if (updatedBirds.length === initialLength) {
+             return NextResponse.json({ message: 'Bird not found' }, { status: 404 });
+        }
+        
+        await writeDB(updatedBirds);
+        
+        return NextResponse.json({ message: 'Bird deleted successfully' }, { status: 200 });
+
+    } catch (error) {
+        console.error('Failed to delete from bird database:', error);
+        return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    }
+}
