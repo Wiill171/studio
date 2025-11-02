@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Mail, Share2 } from "lucide-react";
+import { Mail, Share2, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "@/hooks/use-translation";
 
@@ -83,6 +83,12 @@ export function ResultCard({
         )}
       </CardContent>
       <CardFooter className="bg-primary/5 p-4 flex justify-end gap-2">
+        <Button variant="outline" size="icon">
+            <ThumbsUp className="h-4 w-4" />
+        </Button>
+        <Button variant="outline" size="icon">
+            <ThumbsDown className="h-4 w-4" />
+        </Button>
         <Button variant="outline" size="sm" onClick={() => handleShare("email")}>
           <Mail className="mr-2 h-4 w-4" /> Email
         </Button>
