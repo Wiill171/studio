@@ -18,16 +18,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { Loader2, Bird, X } from "lucide-react";
-import { useFirestore, useStorage } from "@/firebase";
-import { collection, addDoc } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Badge } from "@/components/ui/badge";
-import { Label } from "../ui/label";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "O nome deve ter pelo menos 2 caracteres." }),
   description: z.string().min(10, { message: "A descrição deve ter pelo menos 10 caracteres." }),
   globalRange: z.array(z.string()).min(1, { message: "Pelo menos uma região é obrigatória."}),
+  imageUrl: z.string().url({ message: "Por favor, insira uma URL de imagem válida."}).optional().or(z.literal('')),
 });
 
 export function BirdRegistrationForm() {
@@ -37,13 +34,11 @@ export function BirdRegistrationForm() {
       name: "",
       description: "",
       globalRange: [],
+      imageUrl: ""
     },
   });
   const { toast } = useToast();
-  const firestore = useFirestore();
-  const storage = useStorage();
   const [isLoading, setIsLoading] = useState(false);
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [rangeInput, setRangeInput] = useState("");
 
   const handleRangeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -64,46 +59,33 @@ export function BirdRegistrationForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    if (!firestore || !storage) {
-      toast({
-        variant: "destructive",
-        title: "Erro",
-        description: "Serviços Firebase não estão disponíveis.",
-      });
-      setIsLoading(false);
-      return;
-    }
 
     try {
-        let imageUrl = "";
-        if (photoFile) {
-            const storageRef = ref(storage, `bird-photos/${Date.now()}_${photoFile.name}`);
-            const snapshot = await uploadBytes(storageRef, photoFile);
-            imageUrl = await getDownloadURL(snapshot.ref);
+        const response = await fetch('/api/birds', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Falha ao cadastrar pássaro');
         }
-
-        const birdData = {
-            ...values,
-            imageUrl: imageUrl,
-            createdAt: new Date().toISOString(),
-        };
-
-        const birdsCollection = collection(firestore, "birds");
-        await addDoc(birdsCollection, birdData);
 
         toast({
             title: "Pássaro Cadastrado",
             description: `${values.name} foi adicionado ao banco de dados.`,
         });
         form.reset();
-        setPhotoFile(null);
         form.setValue("globalRange", []);
     } catch (error: any) {
-      console.error("Firebase error:", error);
+      console.error("Error:", error);
       toast({
         variant: "destructive",
         title: "Falha no Cadastro",
-        description: error.message,
+        description: error.message || "Não foi possível adicionar o pássaro.",
       });
     } finally {
         setIsLoading(false);
@@ -174,16 +156,19 @@ export function BirdRegistrationForm() {
                   )}
                 />
 
-                 <div className="space-y-2">
-                    <Label htmlFor="photo-upload">Foto</Label>
-                    <div className="flex items-center gap-4">
-                        <Label htmlFor="photo-upload" className="flex-none cursor-pointer rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground">
-                            Escolher arquivo
-                        </Label>
-                        <Input id="photo-upload" type="file" accept="image/*" className="hidden" onChange={(e) => setPhotoFile(e.target.files?.[0] || null)} />
-                        <span className="text-sm text-muted-foreground">{photoFile?.name || "Nenhum arquivo escolhido"}</span>
-                    </div>
-                 </div>
+                 <FormField
+                  control={form.control}
+                  name="imageUrl"
+                  render={({ field }) => (
+                      <FormItem>
+                      <FormLabel>URL da Foto</FormLabel>
+                      <FormControl>
+                          <Input placeholder="https://exemplo.com/imagem.jpg" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                      </FormItem>
+                  )}
+                  />
 
 
                 <Button type="submit" className="w-full" disabled={isLoading}>

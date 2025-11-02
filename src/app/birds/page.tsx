@@ -1,11 +1,9 @@
 "use client";
 
-import { useCollection, useFirestore, useMemoFirebase } from "@/firebase";
-import { collection } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,7 +13,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Bird } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-interface Bird {
+interface BirdData {
   id: string;
   name: string;
   description: string;
@@ -38,15 +36,29 @@ function BirdCardSkeleton() {
 }
 
 export default function BirdsPage() {
-  const firestore = useFirestore();
   const { t } = useTranslation();
+  const [birds, setBirds] = useState<BirdData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const birdsCollection = useMemoFirebase(() => {
-    if (!firestore) return null;
-    return collection(firestore, "birds");
-  }, [firestore]);
+  useEffect(() => {
+    async function fetchBirds() {
+      try {
+        const response = await fetch('/api/birds');
+        if (!response.ok) {
+          throw new Error('Failed to fetch birds');
+        }
+        const data = await response.json();
+        setBirds(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
-  const { data: birds, isLoading } = useCollection<Bird>(birdsCollection);
+    fetchBirds();
+  }, []);
 
   return (
     <div className="container py-12">
@@ -66,7 +78,15 @@ export default function BirdsPage() {
             </div>
         )}
 
-        {!isLoading && birds?.length === 0 && (
+        {error && (
+             <Alert variant="destructive">
+              <Bird className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+        )}
+
+        {!isLoading && !error && birds.length === 0 && (
           <div className="text-center text-muted-foreground py-8">
             <Alert>
               <Bird className="h-4 w-4" />
@@ -75,7 +95,7 @@ export default function BirdsPage() {
             </Alert>
           </div>
         )}
-        {!isLoading && birds && birds.length > 0 && (
+        {!isLoading && !error && birds.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {birds.map((bird) => (
               <Card key={bird.id} className="flex flex-col overflow-hidden transition-transform hover:scale-105 duration-300">

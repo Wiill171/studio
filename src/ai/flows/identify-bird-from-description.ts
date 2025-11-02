@@ -10,8 +10,6 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { initializeFirebase } from '@/firebase';
-import { collection, getDocs } from 'firebase/firestore';
 
 const IdentifyBirdFromDescriptionInputSchema = z.object({
   description: z.string().describe('A textual description of the bird.'),
@@ -74,10 +72,21 @@ const identifyBirdFromDescriptionFlow = ai.defineFlow(
     outputSchema: IdentifyBirdFromDescriptionOutputSchema,
   },
   async (input) => {
-    const { firestore } = initializeFirebase();
-    const birdsCollection = collection(firestore, "birds");
-    const birdsSnapshot = await getDocs(birdsCollection);
-    const birds = birdsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    // This is a workaround to use fetch in a Genkit flow on Next.js
+    const fetch = ((global as any).fetch);
+
+    // Fetch birds from the local API
+    // The base URL needs to be absolute for server-side fetching.
+    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL 
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
+      : 'http://localhost:9002';
+      
+    const response = await fetch(`${baseUrl}/api/birds`);
+    if (!response.ok) {
+        throw new Error('Failed to fetch birds from local API');
+    }
+    const birds = await response.json();
+
 
     const { output } = await prompt({
         ...input,
@@ -85,7 +94,7 @@ const identifyBirdFromDescriptionFlow = ai.defineFlow(
     });
     // Add imageUrl and imageHint to the output from the known birds list
     const augmentedBirds = output!.birds.map(suggestedBird => {
-        const knownBird = birds.find(b => b.name === suggestedBird.name);
+        const knownBird = birds.find((b: any) => b.name === suggestedBird.name);
         if (knownBird) {
             return {
                 ...suggestedBird,
