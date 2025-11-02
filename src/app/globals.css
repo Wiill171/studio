@@ -83,6 +83,6 @@ body {
     position: absolute;
     inset: 0;
     background-color: hsla(var(--background) / 0.8);
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(8px);
     z-index: -1;
 }

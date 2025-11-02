@@ -43,10 +43,10 @@ export default function RootLayout({
         <FirebaseClientProvider>
           <LanguageProvider>
             <div className="background-container">
-              <Image 
-                src="/arara.jpg" 
-                alt="Plano de fundo com uma arara vermelha" 
-                fill 
+              <Image
+                src="https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=1287&auto=format&fit=crop"
+                alt="Plano de fundo com araras"
+                fill
                 className="object-cover -z-10"
                 priority
               />
