@@ -17,14 +17,15 @@ import { useToast } from "@/hooks/use-toast";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { Loader2, Bird, X } from "lucide-react";
+import { Loader2, Bird, X, Upload } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "O nome deve ter pelo menos 2 caracteres." }),
   description: z.string().min(10, { message: "A descrição deve ter pelo menos 10 caracteres." }),
   globalRange: z.array(z.string()).min(1, { message: "Pelo menos uma região é obrigatória."}),
-  imageUrl: z.string().url({ message: "Por favor, insira uma URL de imagem válida."}).optional().or(z.literal('')),
+  imageUrl: z.string().optional().or(z.literal('')),
 });
 
 export function BirdRegistrationForm() {
@@ -40,6 +41,7 @@ export function BirdRegistrationForm() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [rangeInput, setRangeInput] = useState("");
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleRangeKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && rangeInput.trim() !== "") {
@@ -55,6 +57,24 @@ export function BirdRegistrationForm() {
     const currentRanges = form.getValues("globalRange");
     const newRanges = currentRanges.filter((_, i) => i !== index);
     form.setValue("globalRange", newRanges);
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        form.setValue("imageUrl", base64String);
+        setImagePreview(base64String);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    form.setValue("imageUrl", "");
+    setImagePreview(null);
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -80,6 +100,7 @@ export function BirdRegistrationForm() {
         });
         form.reset();
         form.setValue("globalRange", []);
+        setImagePreview(null);
     } catch (error: any) {
       console.error("Error:", error);
       toast({
@@ -156,19 +177,28 @@ export function BirdRegistrationForm() {
                   )}
                 />
 
-                 <FormField
-                  control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                      <FormItem>
-                      <FormLabel>URL da Foto</FormLabel>
-                      <FormControl>
-                          <Input placeholder="https://exemplo.com/imagem.jpg" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                      </FormItem>
-                  )}
-                  />
+                <FormItem>
+                    <FormLabel>Foto</FormLabel>
+                    <FormControl>
+                        <div className="flex items-center gap-4">
+                            {imagePreview ? (
+                                <div className="relative w-32 h-32 rounded-md overflow-hidden border">
+                                    <Image src={imagePreview} alt="Preview" layout="fill" objectFit="cover" />
+                                    <Button type="button" variant="destructive" size="icon" className="absolute top-1 right-1 h-6 w-6" onClick={removeImage}>
+                                        <X className="h-4 w-4"/>
+                                    </Button>
+                                </div>
+                            ) : (
+                                <label className="flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed rounded-md cursor-pointer hover:bg-muted">
+                                    <Upload className="h-8 w-8 text-muted-foreground" />
+                                    <span className="text-xs text-muted-foreground mt-1">Carregar</span>
+                                    <Input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+                                </label>
+                            )}
+                        </div>
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
 
 
                 <Button type="submit" className="w-full" disabled={isLoading}>
