@@ -259,7 +259,7 @@ export function BirdRegistrationForm() {
                  <div className="space-y-2">
                     <Label htmlFor="photo-upload">Foto</Label>
                     <div className="flex items-center gap-4">
-                        <Label htmlFor="photo-upload" className="flex-none cursor-pointer rounded-md border border-input bg-background px-4 py-2 text-sm text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground">
+                        <Label htmlFor="photo-upload" className="flex-none cursor-pointer rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground">
                             Escolher arquivo
                         </Label>
                         <Input id="photo-upload" type="file" accept="image/*" className="hidden" onChange={(e) => setPhotoFile(e.target.files?.[0] || null)} />
